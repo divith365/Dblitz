@@ -1,0 +1,654 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--text-primary);background:transparent;font-size:14px}
+.app{display:flex;flex-direction:column;min-height:600px}
+.topnav{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--surface-2)}
+.logo{display:flex;align-items:center;gap:8px;cursor:pointer}
+.logo-icon{width:32px;height:32px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center}
+.logo-text{font-size:15px;font-weight:500}.logo-text span{color:#e85d26}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{padding:6px 14px;border-radius:20px;font-size:12px;color:var(--text-secondary);cursor:pointer;border:0.5px solid transparent}
+.nav-tab:hover{background:var(--surface-1)}
+.nav-tab.active{background:#1a1a2e;color:#fff}
+.nav-right{display:flex;align-items:center;gap:8px}
+.avatar-sm{width:30px;height:30px;border-radius:50%;background:#e85d26;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:500;cursor:pointer}
+.btn-primary{background:#1a1a2e;color:#fff;padding:7px 16px;border-radius:var(--radius);font-size:13px;border:none;cursor:pointer;font-weight:500}
+.btn-outline{background:transparent;color:var(--text-primary);padding:7px 16px;border-radius:var(--radius);font-size:13px;border:0.5px solid var(--border-strong);cursor:pointer}
+.btn-orange{background:#e85d26;color:#fff;padding:7px 16px;border-radius:var(--radius);font-size:13px;border:none;cursor:pointer;font-weight:500}
+.page{display:none;padding:1.5rem}
+.page.active{display:block}
+
+/* AUTH */
+.auth-wrap{max-width:420px;margin:0 auto;padding:2rem 0}
+.auth-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:2rem}
+.auth-logo{display:flex;flex-direction:column;align-items:center;margin-bottom:1.5rem}
+.auth-logo-icon{width:48px;height:48px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.auth-title{font-size:18px;font-weight:500;text-align:center}
+.auth-sub{font-size:13px;color:var(--text-muted);text-align:center;margin-top:4px}
+.form-group{margin-bottom:1rem}
+.form-label{font-size:12px;color:var(--text-secondary);margin-bottom:5px;display:block}
+.form-input{width:100%;padding:8px 12px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-primary);font-size:13px;font-family:var(--font-sans)}
+.form-input:focus{outline:none;border-color:var(--border-accent)}
+.phone-row{display:flex;gap:6px}
+.country-code{width:90px;flex-shrink:0}
+.otp-row{display:flex;gap:8px;margin-bottom:1rem}
+.otp-input{width:44px;height:44px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);text-align:center;font-size:18px;font-weight:500;color:var(--text-primary)}
+.otp-input:focus{outline:none;border-color:#e85d26}
+.step-indicator{display:flex;align-items:center;gap:0;margin-bottom:1.5rem;justify-content:center}
+.step{display:flex;flex-direction:column;align-items:center;gap:4px}
+.step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500}
+.step-done{background:#e85d26;color:#fff}
+.step-active{background:#1a1a2e;color:#fff}
+.step-inactive{background:var(--surface-1);color:var(--text-muted);border:0.5px solid var(--border)}
+.step-label{font-size:10px;color:var(--text-muted)}
+.step-line{width:40px;height:1px;background:var(--border);margin-bottom:14px}
+
+/* PROFILE SETUP */
+.profile-wrap{max-width:560px;margin:0 auto;padding:1rem 0}
+.profile-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem}
+.profile-title{font-size:16px;font-weight:500;margin-bottom:4px}
+.profile-sub{font-size:12px;color:var(--text-muted);margin-bottom:1.25rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.interest-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.interest-chip{padding:5px 12px;border-radius:20px;font-size:12px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);cursor:pointer}
+.interest-chip.selected{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.role-card{padding:10px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);cursor:pointer;text-align:center}
+.role-card.selected{border-color:#e85d26;background:#fff5f0}
+.role-card i{font-size:20px;display:block;margin-bottom:4px;color:var(--text-muted)}
+.role-card.selected i{color:#e85d26}
+.role-card-label{font-size:11px;font-weight:500}
+.role-card-desc{font-size:10px;color:var(--text-muted);margin-top:2px}
+.lang-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+
+/* HOME DASHBOARD */
+.home-header{margin-bottom:1.25rem}
+.home-greeting{font-size:20px;font-weight:500}
+.home-sub{font-size:13px;color:var(--text-muted);margin-top:2px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.section-title{font-size:15px;font-weight:500}
+.section-link{font-size:12px;color:var(--text-accent);text-decoration:none;cursor:pointer}
+.live-badge{display:inline-flex;align-items:center;gap:4px;background:#fee2e2;color:#991b1b;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.live-dot{width:5px;height:5px;border-radius:50%;background:#dc2626;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.debate-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:1.25rem}
+.debate-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem;cursor:pointer}
+.debate-card:hover{border-color:var(--border-strong)}
+.card-top{display:flex;justify-content:space-between;margin-bottom:6px}
+.card-cat{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px}
+.card-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:6px}
+.card-meta{display:flex;gap:10px;flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--text-secondary)}
+.viewers-bar{height:3px;background:var(--surface-1);border-radius:2px;margin-top:8px}
+.viewers-fill{height:100%;border-radius:2px;background:#e85d26}
+.upcoming-badge{background:var(--bg-success);color:var(--text-success);font-size:10px;padding:2px 7px;border-radius:10px}
+.badge{font-size:10px;padding:2px 7px;border-radius:10px}
+.badge-politics{background:#ede9fe;color:#5b21b6}
+.badge-sports{background:#dbeafe;color:#1e40af}
+.badge-tech{background:#fef9c3;color:#854d0e}
+.badge-health{background:#dcfce7;color:#166534}
+.badge-edu{background:#fce7f3;color:#9d174d}
+.badge-env{background:#f0fdf4;color:#14532d}
+.section-mb{margin-bottom:1.25rem}
+
+/* DEBATE DETAIL */
+.detail-back{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);cursor:pointer;margin-bottom:1rem}
+.detail-header{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.detail-title{font-size:18px;font-weight:500;line-height:1.3;margin-bottom:8px}
+.detail-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.detail-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px}
+.detail-grid{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.detail-main{}
+.detail-side{}
+.panel{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:10px}
+.panel-title{font-size:13px;font-weight:500;margin-bottom:10px}
+.debator-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.debator-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+.debator-name{font-size:13px;font-weight:500}
+.debator-meta{font-size:11px;color:var(--text-muted)}
+.stars{color:#f59e0b;font-size:11px}
+.stance-for{background:#dcfce7;color:#166534;font-size:10px;padding:2px 7px;border-radius:10px}
+.stance-against{background:#fee2e2;color:#991b1b;font-size:10px;padding:2px 7px;border-radius:10px}
+.join-btn{width:100%;padding:10px;border-radius:var(--radius);font-size:13px;font-weight:500;border:none;cursor:pointer;margin-bottom:6px}
+.join-watch{background:#e85d26;color:#fff}
+.join-interest{background:var(--surface-1);color:var(--text-primary);border:0.5px solid var(--border)}
+.chat-area{background:var(--surface-1);border-radius:var(--radius);padding:10px;height:120px;overflow:auto;margin-bottom:8px}
+.chat-msg{font-size:11px;margin-bottom:5px;line-height:1.4}
+.chat-name{font-weight:500;color:#e85d26}
+.chat-input-row{display:flex;gap:6px}
+.chat-input{flex:1;padding:6px 10px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-2);font-size:12px;color:var(--text-primary);font-family:var(--font-sans)}
+
+/* RECORDINGS */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.filter-chip{padding:5px 12px;border-radius:20px;font-size:12px;border:0.5px solid var(--border);background:var(--surface-2);color:var(--text-secondary);cursor:pointer}
+.filter-chip.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.search-row{display:flex;gap:8px;margin-bottom:1rem}
+.search-input{flex:1;padding:8px 12px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-2);font-size:13px;color:var(--text-primary);font-family:var(--font-sans)}
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.rec-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer}
+.rec-card:hover{border-color:var(--border-strong)}
+.rec-thumb{height:100px;display:flex;align-items:center;justify-content:center;position:relative}
+.play-btn{width:34px;height:34px;border-radius:50%;background:rgba(232,93,38,0.9);display:flex;align-items:center;justify-content:center}
+.rec-info{padding:10px 12px}
+.rec-title{font-size:12px;font-weight:500;line-height:1.4;margin-bottom:5px}
+.rec-meta{font-size:11px;color:var(--text-muted)}
+
+/* PROFILE PAGE */
+.profile-page-grid{display:grid;grid-template-columns:1fr 2fr;gap:14px}
+.profile-side-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center}
+.profile-big-avatar{width:64px;height:64px;border-radius:50%;background:#e85d26;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;font-weight:500;margin:0 auto 10px}
+.profile-name{font-size:16px;font-weight:500}
+.profile-handle{font-size:12px;color:var(--text-muted)}
+.profile-stat-row{display:flex;justify-content:space-around;margin:12px 0;padding:12px 0;border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border)}
+.profile-stat{text-align:center}
+.profile-stat-num{font-size:18px;font-weight:500}
+.profile-stat-label{font-size:10px;color:var(--text-muted)}
+.badge-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+.achievement{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:5px 10px;font-size:11px;display:flex;align-items:center;gap:4px}
+.history-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;overflow:hidden}
+.history-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--border);font-size:12px}
+.history-item:last-child{border-bottom:none}
+.history-result{font-size:10px;padding:2px 7px;border-radius:10px}
+.result-win{background:#dcfce7;color:#166534}
+.result-participated{background:#dbeafe;color:#1e40af}
+.result-listened{background:#f3e8ff;color:#6b21a8}
+
+/* RESOURCES */
+.resource-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.resource-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem;cursor:pointer}
+.resource-card:hover{border-color:var(--border-strong)}
+.resource-icon{width:36px;height:36px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.resource-title{font-size:13px;font-weight:500;margin-bottom:4px}
+.resource-desc{font-size:11px;color:var(--text-muted);line-height:1.5}
+.resource-meta{font-size:10px;color:var(--text-muted);margin-top:6px}
+
+/* GRIEVANCE */
+.grievance-wrap{max-width:500px}
+.grievance-status-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:10px}
+.gs-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.gs-title{font-size:13px;font-weight:500}
+.gs-status{font-size:10px;padding:2px 7px;border-radius:10px}
+.gs-pending{background:#fef9c3;color:#854d0e}
+.gs-resolved{background:#dcfce7;color:#166534}
+.gs-desc{font-size:12px;color:var(--text-muted)}
+.gs-date{font-size:11px;color:var(--text-muted);margin-top:4px}
+</style>
+
+<div class="app">
+  <div class="topnav">
+    <div class="logo" onclick="showPage('home')">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="4" rx="1" fill="#fff"/><rect x="8" y="18" width="8" height="2" rx="1" fill="#fff"/></svg>
+      </div>
+      <span class="logo-text">Debate<span>Blitz</span></span>
+    </div>
+    <div class="nav-tabs" id="main-nav" style="display:none">
+      <div class="nav-tab active" onclick="showPage('home',this)">Home</div>
+      <div class="nav-tab" onclick="showPage('browse',this)">Browse</div>
+      <div class="nav-tab" onclick="showPage('recordings',this)">Recordings</div>
+      <div class="nav-tab" onclick="showPage('resources',this)">Resources</div>
+      <div class="nav-tab" onclick="showPage('grievance',this)">Grievance</div>
+    </div>
+    <div class="nav-right">
+      <div id="auth-btns">
+        <button class="btn-outline" style="margin-right:6px" onclick="showPage('login')">Log in</button>
+        <button class="btn-orange" onclick="showPage('register')">Join free</button>
+      </div>
+      <div id="user-nav" style="display:none;align-items:center;gap:8px">
+        <span style="font-size:12px;color:var(--text-muted)">Hi, Arjun</span>
+        <div class="avatar-sm" onclick="showPage('profile')">AS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTER PAGE -->
+  <div class="page active" id="page-register">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <div class="auth-logo-icon"><svg viewBox="0 0 24 24" fill="none" width="22" height="22"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="4" rx="1" fill="#fff"/><rect x="8" y="18" width="8" height="2" rx="1" fill="#fff"/></svg></div>
+          <div class="auth-title">Join DebateBlitz</div>
+          <div class="auth-sub">Create your account to debate, watch, and connect</div>
+        </div>
+        <div class="step-indicator">
+          <div class="step"><div class="step-circle step-done"><i class="ti ti-check" style="font-size:12px" aria-hidden="true"></i></div><div class="step-label">Phone</div></div>
+          <div class="step-line"></div>
+          <div class="step"><div class="step-circle step-active">2</div><div class="step-label">Verify</div></div>
+          <div class="step-line"></div>
+          <div class="step"><div class="step-circle step-inactive">3</div><div class="step-label">Profile</div></div>
+        </div>
+        <div style="text-align:center;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:4px">Enter the OTP sent to +91 98765 43210</div>
+          <div style="font-size:12px;color:var(--text-muted)">Didn't receive? <span style="color:var(--text-accent);cursor:pointer">Resend in 0:42</span></div>
+        </div>
+        <div class="otp-row" style="justify-content:center">
+          <input class="otp-input" maxlength="1" value="4">
+          <input class="otp-input" maxlength="1" value="8">
+          <input class="otp-input" maxlength="1" value="2">
+          <input class="otp-input" maxlength="1" value="">
+          <input class="otp-input" maxlength="1" value="">
+          <input class="otp-input" maxlength="1" value="">
+        </div>
+        <button class="btn-primary" style="width:100%;padding:10px;font-size:14px" onclick="showPage('profile-setup')">Verify OTP &amp; continue</button>
+        <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-muted)">Already have an account? <span style="color:var(--text-accent);cursor:pointer" onclick="showPage('login')">Log in</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN PAGE -->
+  <div class="page" id="page-login">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <div class="auth-logo-icon"><svg viewBox="0 0 24 24" fill="none" width="22" height="22"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="4" rx="1" fill="#fff"/><rect x="8" y="18" width="8" height="2" rx="1" fill="#fff"/></svg></div>
+          <div class="auth-title">Welcome back</div>
+          <div class="auth-sub">Log in with your phone number</div>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Phone number</div>
+          <div class="phone-row">
+            <select class="form-input country-code"><option>🇮🇳 +91</option><option>🇺🇸 +1</option><option>🇬🇧 +44</option><option>🇦🇺 +61</option><option>🇸🇬 +65</option></select>
+            <input class="form-input" placeholder="98765 43210" style="flex:1">
+          </div>
+        </div>
+        <button class="btn-primary" style="width:100%;padding:10px;font-size:14px" onclick="showPage('home-auth')">Send OTP</button>
+        <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-muted)">New here? <span style="color:var(--text-accent);cursor:pointer" onclick="showPage('register')">Create account</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE SETUP -->
+  <div class="page" id="page-profile-setup">
+    <div class="profile-wrap">
+      <div class="step-indicator" style="margin-bottom:1rem">
+        <div class="step"><div class="step-circle step-done"><i class="ti ti-check" style="font-size:12px" aria-hidden="true"></i></div><div class="step-label">Phone</div></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-circle step-done"><i class="ti ti-check" style="font-size:12px" aria-hidden="true"></i></div><div class="step-label">Verify</div></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-circle step-active">3</div><div class="step-label">Profile</div></div>
+      </div>
+      <div class="profile-card">
+        <div class="profile-title">Set up your profile</div>
+        <div class="profile-sub">Tell us about yourself — helps us show you the right debates</div>
+        <div class="form-row">
+          <div class="form-group"><div class="form-label">Full name</div><input class="form-input" placeholder="Arjun Sharma"></div>
+          <div class="form-group"><div class="form-label">Username</div><input class="form-input" placeholder="@arjun_debates"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><div class="form-label">Qualification <span style="color:var(--text-muted)">(optional)</span></div><input class="form-input" placeholder="e.g. MBA, Law, Student"></div>
+          <div class="form-group"><div class="form-label">Country</div><select class="form-input"><option>🇮🇳 India</option><option>🇺🇸 USA</option><option>🇬🇧 UK</option><option>🇦🇺 Australia</option></select></div>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Preferred languages <span style="color:var(--text-muted)">(up to 3)</span></div>
+          <div class="lang-grid">
+            <span class="interest-chip selected">English</span>
+            <span class="interest-chip selected">Hindi</span>
+            <span class="interest-chip">Tamil</span>
+            <span class="interest-chip">Kannada</span>
+            <span class="interest-chip">Telugu</span>
+            <span class="interest-chip">Malayalam</span>
+            <span class="interest-chip">Marathi</span>
+            <span class="interest-chip">Bengali</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Your role on DebateBlitz</div>
+          <div class="role-grid">
+            <div class="role-card selected"><i class="ti ti-microphone-2" aria-hidden="true"></i><div class="role-card-label">Debator</div><div class="role-card-desc">Participate in debates</div></div>
+            <div class="role-card"><i class="ti ti-headphones" aria-hidden="true"></i><div class="role-card-label">Listener</div><div class="role-card-desc">Watch and learn</div></div>
+            <div class="role-card"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i><div class="role-card-label">Moderator</div><div class="role-card-desc">Admin assigns only</div></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Areas of interest</div>
+          <div class="interest-grid">
+            <span class="interest-chip selected">Politics</span>
+            <span class="interest-chip selected">Sports</span>
+            <span class="interest-chip">Health</span>
+            <span class="interest-chip selected">Technology</span>
+            <span class="interest-chip">Education</span>
+            <span class="interest-chip">Environment</span>
+            <span class="interest-chip">Finance</span>
+            <span class="interest-chip">Culture &amp; Arts</span>
+            <span class="interest-chip">Science</span>
+            <span class="interest-chip">Law &amp; Justice</span>
+            <span class="interest-chip">International Affairs</span>
+          </div>
+        </div>
+        <button class="btn-orange" style="width:100%;padding:10px;font-size:14px;margin-top:8px" onclick="showPage('home-auth')">Complete setup → enter DebateBlitz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOME (logged in) -->
+  <div class="page" id="page-home-auth">
+    <div class="home-header">
+      <div class="home-greeting">Good evening, Arjun 👋</div>
+      <div class="home-sub">3 debates live now · 2 upcoming in your interests</div>
+    </div>
+    <div class="section-mb">
+      <div class="section-header">
+        <div style="display:flex;align-items:center;gap:8px"><span class="section-title">Live now</span><span class="live-badge"><span class="live-dot"></span>3 active</span></div>
+        <span class="section-link" onclick="showPage('browse')">View all</span>
+      </div>
+      <div class="debate-grid">
+        <div class="debate-card" onclick="showPage('debate-detail')">
+          <div class="card-top"><span class="card-cat">Politics</span><span class="live-badge"><span class="live-dot"></span>Live</span></div>
+          <div class="card-title">Modi vs Opposition — Budget 2025: Growth or burden?</div>
+          <div class="card-meta">
+            <span class="meta-item"><i class="ti ti-users" style="font-size:12px" aria-hidden="true"></i> 1,240</span>
+            <span class="meta-item"><i class="ti ti-clock" style="font-size:12px" aria-hidden="true"></i> 42 min</span>
+            <span class="meta-item">🇮🇳</span>
+            <span class="meta-item">4.9 ★</span>
+          </div>
+          <div class="viewers-bar"><div class="viewers-fill" style="width:82%"></div></div>
+        </div>
+        <div class="debate-card" onclick="showPage('debate-detail')">
+          <div class="card-top"><span class="card-cat">Sports</span><span class="live-badge"><span class="live-dot"></span>Live</span></div>
+          <div class="card-title">IPL should be banned — cricket or commerce?</div>
+          <div class="card-meta">
+            <span class="meta-item"><i class="ti ti-users" style="font-size:12px" aria-hidden="true"></i> 876</span>
+            <span class="meta-item"><i class="ti ti-clock" style="font-size:12px" aria-hidden="true"></i> 18 min</span>
+            <span class="meta-item">🇮🇳</span>
+          </div>
+          <div class="viewers-bar"><div class="viewers-fill" style="width:60%"></div></div>
+        </div>
+        <div class="debate-card" onclick="showPage('debate-detail')">
+          <div class="card-top"><span class="card-cat">Technology</span><span class="live-badge"><span class="live-dot"></span>Live</span></div>
+          <div class="card-title">AI will replace 50% of jobs by 2030 — fact or fear?</div>
+          <div class="card-meta">
+            <span class="meta-item"><i class="ti ti-users" style="font-size:12px" aria-hidden="true"></i> 542</span>
+            <span class="meta-item"><i class="ti ti-clock" style="font-size:12px" aria-hidden="true"></i> 5 min</span>
+            <span class="meta-item">🌍</span>
+          </div>
+          <div class="viewers-bar"><div class="viewers-fill" style="width:38%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-mb">
+      <div class="section-header"><span class="section-title">Upcoming — your interests</span><span class="section-link" onclick="showPage('browse')">View all</span></div>
+      <div class="debate-grid">
+        <div class="debate-card" onclick="showPage('debate-detail')">
+          <div class="card-top"><span class="card-cat">Politics</span><span class="upcoming-badge">Tomorrow 6 PM</span></div>
+          <div class="card-title">TN CM — bold leadership or missed opportunity?</div>
+          <div class="card-meta">
+            <span class="meta-item"><i class="ti ti-users" style="font-size:12px" aria-hidden="true"></i> 4 debators</span>
+            <span class="meta-item">284 interested</span>
+          </div>
+        </div>
+        <div class="debate-card" onclick="showPage('debate-detail')">
+          <div class="card-top"><span class="card-cat">Technology</span><span class="upcoming-badge">Sat 4 PM</span></div>
+          <div class="card-title">Crypto — future of money or Ponzi scheme?</div>
+          <div class="card-meta">
+            <span class="meta-item"><i class="ti ti-users" style="font-size:12px" aria-hidden="true"></i> 2 debators</span>
+            <span class="meta-item">142 interested</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section-mb">
+      <div class="section-header"><span class="section-title">Top recordings for you</span><span class="section-link" onclick="showPage('recordings')">Full library</span></div>
+      <div class="rec-grid">
+        <div class="rec-card"><div class="rec-thumb" style="background:#1a1a2e"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">Modi vs Opposition — Budget 2025</div><div class="rec-meta">★★★★★ 4.9 · 18.2k views</div></div></div>
+        <div class="rec-card"><div class="rec-thumb" style="background:#0c2a1a"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">India vs Pakistan — beyond cricket</div><div class="rec-meta">★★★★★ 4.8 · 12.7k views</div></div></div>
+        <div class="rec-card"><div class="rec-thumb" style="background:#1a0a2e"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">AI will replace 50% of jobs</div><div class="rec-meta">★★★★ 4.4 · 6.1k views</div></div></div>
+        <div class="rec-card"><div class="rec-thumb" style="background:#2d1b00"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">Climate change — who bears the cost?</div><div class="rec-meta">★★★★★ 4.7 · 9.4k views</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BROWSE -->
+  <div class="page" id="page-browse">
+    <div class="section-header" style="margin-bottom:1rem"><span class="section-title">Browse debates</span></div>
+    <div class="filter-bar">
+      <span class="filter-chip active">All</span>
+      <span class="filter-chip">Live now</span>
+      <span class="filter-chip">Upcoming</span>
+      <span class="filter-chip">Politics</span>
+      <span class="filter-chip">Sports</span>
+      <span class="filter-chip">Technology</span>
+      <span class="filter-chip">Health</span>
+      <span class="filter-chip">Education</span>
+      <span class="filter-chip">🇮🇳 India</span>
+      <span class="filter-chip">🌍 Global</span>
+      <span class="filter-chip">Top rated</span>
+    </div>
+    <div class="debate-grid">
+      <div class="debate-card" onclick="showPage('debate-detail')"><div class="card-top"><span class="card-cat">Politics</span><span class="live-badge"><span class="live-dot"></span>Live</span></div><div class="card-title">Modi vs Opposition — Budget 2025</div><div class="card-meta"><span class="meta-item"><i class="ti ti-users" style="font-size:12px" aria-hidden="true"></i> 1,240</span><span class="meta-item">🇮🇳</span><span class="meta-item">4.9 ★</span></div><div class="viewers-bar"><div class="viewers-fill" style="width:82%"></div></div></div>
+      <div class="debate-card" onclick="showPage('debate-detail')"><div class="card-top"><span class="card-cat">Sports</span><span class="live-badge"><span class="live-dot"></span>Live</span></div><div class="card-title">IPL should be banned — cricket or commerce?</div><div class="card-meta"><span class="meta-item"><i class="ti ti-users" style="font-size:12px" aria-hidden="true"></i> 876</span><span class="meta-item">🇮🇳</span></div><div class="viewers-bar"><div class="viewers-fill" style="width:60%"></div></div></div>
+      <div class="debate-card" onclick="showPage('debate-detail')"><div class="card-top"><span class="card-cat">Politics</span><span class="upcoming-badge">Tomorrow 6 PM</span></div><div class="card-title">TN CM — bold leadership or missed opportunity?</div><div class="card-meta"><span class="meta-item">4 debators</span><span class="meta-item">284 interested</span><span class="meta-item">🇮🇳</span></div></div>
+      <div class="debate-card" onclick="showPage('debate-detail')"><div class="card-top"><span class="card-cat">Technology</span><span class="upcoming-badge">Sat 4 PM</span></div><div class="card-title">Crypto — future of money or Ponzi scheme?</div><div class="card-meta"><span class="meta-item">2 debators</span><span class="meta-item">142 interested</span><span class="meta-item">🌍</span></div></div>
+      <div class="debate-card" onclick="showPage('debate-detail')"><div class="card-top"><span class="card-cat">Education</span><span class="upcoming-badge">Sun 5 PM</span></div><div class="card-title">College fees in India — exploitation or investment?</div><div class="card-meta"><span class="meta-item">3 debators</span><span class="meta-item">98 interested</span><span class="meta-item">🇮🇳</span></div></div>
+      <div class="debate-card" onclick="showPage('debate-detail')"><div class="card-top"><span class="card-cat">Health</span><span class="upcoming-badge">Mon 7 PM</span></div><div class="card-title">Junk food advertising — ban it or regulate it?</div><div class="card-meta"><span class="meta-item">2 debators</span><span class="meta-item">76 interested</span><span class="meta-item">🌍</span></div></div>
+    </div>
+  </div>
+
+  <!-- DEBATE DETAIL -->
+  <div class="page" id="page-debate-detail">
+    <div class="detail-back" onclick="showPage('home-auth')"><i class="ti ti-arrow-left" style="font-size:14px" aria-hidden="true"></i> Back to home</div>
+    <div class="detail-header">
+      <div class="detail-tags">
+        <span class="live-badge"><span class="live-dot"></span>Live · 42 min</span>
+        <span class="badge badge-politics">Politics</span>
+        <span style="font-size:11px;color:var(--text-muted)">🇮🇳 India · English</span>
+      </div>
+      <div class="detail-title">Modi vs Opposition — Budget 2025: Growth or burden?</div>
+      <div class="detail-desc">A high-stakes debate on whether the Union Budget 2025 serves India's growth agenda or places undue burden on the middle class. Four leading voices from policy, academia, and civil society square off.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <span class="meta-item" style="font-size:12px"><i class="ti ti-users" style="font-size:13px" aria-hidden="true"></i> 1,240 watching</span>
+        <span class="meta-item" style="font-size:12px"><i class="ti ti-clock" style="font-size:13px" aria-hidden="true"></i> Started 6:18 PM</span>
+        <span class="meta-item" style="font-size:12px"><i class="ti ti-video" style="font-size:13px" aria-hidden="true"></i> Recording on</span>
+        <span class="meta-item" style="font-size:12px"><i class="ti ti-star" style="font-size:13px" aria-hidden="true"></i> 4.9 avg rating</span>
+      </div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-main">
+        <div class="panel">
+          <div class="panel-title">Debators</div>
+          <div class="debator-row"><div class="debator-avatar" style="background:#fef3c7;color:#92400e">AS</div><div style="flex:1"><div class="debator-name">Arjun Sharma <span class="stance-for">For</span></div><div class="debator-meta">Policy analyst · 🇮🇳 · <span class="stars">★★★★★</span> 4.9</div></div></div>
+          <div class="debator-row"><div class="debator-avatar" style="background:#fee2e2;color:#991b1b">RK</div><div style="flex:1"><div class="debator-name">Rahul Kumar <span class="stance-against">Against</span></div><div class="debator-meta">Economist · 🇮🇳 · <span class="stars">★★★★</span> 4.6</div></div></div>
+          <div class="debator-row"><div class="debator-avatar" style="background:#dbeafe;color:#1e40af">VN</div><div style="flex:1"><div class="debator-name">Vikram Nair <span class="stance-for">For</span></div><div class="debator-meta">Civil servant · 🇮🇳 · <span class="stars">★★★★★</span> 4.8</div></div></div>
+          <div class="debator-row"><div class="debator-avatar" style="background:#dcfce7;color:#166534">NK</div><div style="flex:1"><div class="debator-name">Nandita K. <span class="stance-against">Against</span></div><div class="debator-meta">Journalist · 🇮🇳 · <span class="stars">★★★★</span> 4.5</div></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Moderator</div>
+          <div class="debator-row"><div class="debator-avatar" style="background:#f3e8ff;color:#6b21a8">PM</div><div><div class="debator-name">Priya Mehta</div><div class="debator-meta">Senior moderator · 🇮🇳 · 42 debates moderated</div></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Listener chat</div>
+          <div class="chat-area">
+            <div class="chat-msg"><span class="chat-name">Kiran S:</span> Great points from Rahul on fiscal deficit 👏</div>
+            <div class="chat-msg"><span class="chat-name">Sarah J:</span> Arjun is so articulate today</div>
+            <div class="chat-msg"><span class="chat-name">Ravi M:</span> The subsidy argument is weak tbh</div>
+            <div class="chat-msg"><span class="chat-name">Meera:</span> Vikram just dropped a bomb 🔥</div>
+            <div class="chat-msg"><span class="chat-name">James:</span> Watching from UK, this is great content</div>
+            <div class="chat-msg"><span class="chat-name">Priya K:</span> Can we get a Kannada debate next?</div>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" placeholder="Type a message (listeners only)...">
+            <button class="btn-orange" style="padding:6px 12px;font-size:12px">Send</button>
+          </div>
+        </div>
+      </div>
+      <div class="detail-side">
+        <div class="panel">
+          <button class="join-btn join-watch">▶ Watch live on Google Meet</button>
+          <button class="join-btn join-interest" style="margin-top:6px">🔔 Express interest as debator</button>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Live stats</div>
+          <div class="eng-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid var(--border)"><span>Watching now</span><span style="font-weight:500;color:#e85d26">1,240</span></div>
+          <div class="eng-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid var(--border)"><span>🇮🇳 India</span><span style="font-weight:500">980</span></div>
+          <div class="eng-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid var(--border)"><span>🌍 Others</span><span style="font-weight:500">260</span></div>
+          <div class="eng-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid var(--border)"><span>Chat messages</span><span style="font-weight:500">342</span></div>
+          <div class="eng-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span>Duration</span><span style="font-weight:500">42 min</span></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Rate this debate</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Rate after the debate ends</div>
+          <div style="font-size:22px;color:#e2e8f0;letter-spacing:2px;cursor:pointer">★★★★★</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:6px">Also rate individual debators after debate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECORDINGS -->
+  <div class="page" id="page-recordings">
+    <div class="section-header" style="margin-bottom:1rem"><span class="section-title">Recordings library</span></div>
+    <div class="search-row">
+      <input class="search-input" placeholder="Search by topic, debator, country...">
+      <select class="form-input" style="width:140px">
+        <option>All countries</option><option>🇮🇳 India</option><option>🌍 Global</option>
+      </select>
+      <select class="form-input" style="width:130px">
+        <option>Any date</option><option>This week</option><option>This month</option>
+      </select>
+    </div>
+    <div class="filter-bar">
+      <span class="filter-chip active">All</span>
+      <span class="filter-chip">Politics</span>
+      <span class="filter-chip">Sports</span>
+      <span class="filter-chip">Technology</span>
+      <span class="filter-chip">Health</span>
+      <span class="filter-chip">Education</span>
+      <span class="filter-chip">Top rated</span>
+      <span class="filter-chip">Most watched</span>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card"><div class="rec-thumb" style="background:#1a1a2e"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">Modi vs Opposition — Budget 2025</div><div class="rec-meta"><span class="badge badge-politics" style="margin-right:4px">Politics</span>★★★★★ · 18.2k · 🇮🇳</div></div></div>
+      <div class="rec-card"><div class="rec-thumb" style="background:#0c2a1a"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">India vs Pakistan — beyond cricket</div><div class="rec-meta"><span class="badge badge-sports" style="margin-right:4px">Sports</span>★★★★★ · 12.7k · 🇮🇳</div></div></div>
+      <div class="rec-card"><div class="rec-thumb" style="background:#2d1b00"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">Climate change — who bears the cost?</div><div class="rec-meta"><span class="badge badge-env" style="margin-right:4px">Environment</span>★★★★★ · 9.4k · 🌍</div></div></div>
+      <div class="rec-card"><div class="rec-thumb" style="background:#1a0a2e"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">Social media — democracy or disruption?</div><div class="rec-meta"><span class="badge badge-tech" style="margin-right:4px">Tech</span>★★★★★ · 12.7k · 🌍</div></div></div>
+      <div class="rec-card"><div class="rec-thumb" style="background:#0c1a2a"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">UPI vs cash — India's payment future</div><div class="rec-meta"><span class="badge badge-tech" style="margin-right:4px">Tech</span>★★★★ · 6.1k · 🇮🇳</div></div></div>
+      <div class="rec-card"><div class="rec-thumb" style="background:#1a2a0c"><div class="play-btn"><i class="ti ti-player-play" style="color:#fff;font-size:13px" aria-hidden="true"></i></div></div><div class="rec-info"><div class="rec-title">NEET exam — fair or flawed?</div><div class="rec-meta"><span class="badge badge-edu" style="margin-right:4px">Education</span>★★★★ · 4.8k · 🇮🇳</div></div></div>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="page" id="page-resources">
+    <div class="section-header" style="margin-bottom:1rem"><span class="section-title">Resources for debators</span></div>
+    <div class="resource-grid">
+      <div class="resource-card"><div class="resource-icon" style="background:#ede9fe"><i class="ti ti-microphone-2" style="color:#5b21b6;font-size:18px" aria-hidden="true"></i></div><div class="resource-title">How to win any debate</div><div class="resource-desc">Master the art of argument structuring, rebuttal, and confident delivery.</div><div class="resource-meta">Article · 8 min read · 4,240 views</div></div>
+      <div class="resource-card"><div class="resource-icon" style="background:#dbeafe"><i class="ti ti-layout-list" style="color:#1e40af;font-size:18px" aria-hidden="true"></i></div><div class="resource-title">Debate formats explained</div><div class="resource-desc">Oxford, Parliamentary, Lincoln-Douglas — learn each format's rules.</div><div class="resource-meta">Video · 12 min · 3,180 views</div></div>
+      <div class="resource-card"><div class="resource-icon" style="background:#fef9c3"><i class="ti ti-alert-triangle" style="color:#854d0e;font-size:18px" aria-hidden="true"></i></div><div class="resource-title">Logical fallacies to avoid</div><div class="resource-desc">Ad hominem, straw man, false dichotomy — identify and counter them all.</div><div class="resource-meta">Article · 10 min read · 2,640 views</div></div>
+      <div class="resource-card"><div class="resource-icon" style="background:#dcfce7"><i class="ti ti-brain" style="color:#166534;font-size:18px" aria-hidden="true"></i></div><div class="resource-title">Research like a pro</div><div class="resource-desc">How to build a strong factual base for any debate topic in under an hour.</div><div class="resource-meta">Article · 6 min read · 1,980 views</div></div>
+      <div class="resource-card"><div class="resource-icon" style="background:#fee2e2"><i class="ti ti-users" style="color:#991b1b;font-size:18px" aria-hidden="true"></i></div><div class="resource-title">Being a great moderator</div><div class="resource-desc">Fairness, timing, keeping debates on track — moderator's playbook.</div><div class="resource-meta">Video · 15 min · 1,420 views</div></div>
+      <div class="resource-card"><div class="resource-icon" style="background:#fce7f3"><i class="ti ti-star" style="color:#9d174d;font-size:18px" aria-hidden="true"></i></div><div class="resource-title">Famous debate moments</div><div class="resource-desc">Curated clips from iconic political, academic, and cultural debates globally.</div><div class="resource-meta">Video collection · 28 clips · 5,840 views</div></div>
+    </div>
+  </div>
+
+  <!-- PROFILE PAGE -->
+  <div class="page" id="page-profile">
+    <div class="profile-page-grid">
+      <div>
+        <div class="profile-side-card">
+          <div class="profile-big-avatar">AS</div>
+          <div class="profile-name">Arjun Sharma</div>
+          <div class="profile-handle">@arjun_debates · 🇮🇳 India</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Policy analyst · Debator</div>
+          <div class="profile-stat-row">
+            <div class="profile-stat"><div class="profile-stat-num">24</div><div class="profile-stat-label">Debates</div></div>
+            <div class="profile-stat"><div class="profile-stat-num" style="color:#f59e0b">4.9★</div><div class="profile-stat-label">Rating</div></div>
+            <div class="profile-stat"><div class="profile-stat-num">840</div><div class="profile-stat-label">Watchers</div></div>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">Interests: Politics, Sports, Tech</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Languages: English, Hindi</div>
+          <button class="btn-outline" style="width:100%;font-size:12px">Edit profile</button>
+          <div class="badge-grid">
+            <div class="achievement">🏆 Top debator</div>
+            <div class="achievement">🔥 10 debates</div>
+            <div class="achievement">⭐ 4.9 rating</div>
+            <div class="achievement">🌍 Global</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:14px;font-weight:500;margin-bottom:10px">My debate history</div>
+        <div class="history-card">
+          <div class="history-item"><div style="flex:1"><div style="font-size:12px;font-weight:500">Modi vs Opposition — Budget 2025</div><div style="font-size:11px;color:var(--text-muted)">Jul 5 · Politics · <span class="stars">★★★★★</span> rated 4.9</div></div><span class="history-result result-win">Won</span></div>
+          <div class="history-item"><div style="flex:1"><div style="font-size:12px;font-weight:500">India vs Pakistan — beyond cricket</div><div style="font-size:11px;color:var(--text-muted)">Jun 28 · Sports · <span class="stars">★★★★★</span> rated 4.8</div></div><span class="history-result result-participated">Participated</span></div>
+          <div class="history-item"><div style="flex:1"><div style="font-size:12px;font-weight:500">UPI vs cash — India's payment future</div><div style="font-size:11px;color:var(--text-muted)">Jun 15 · Tech · <span class="stars">★★★★</span> rated 4.4</div></div><span class="history-result result-win">Won</span></div>
+          <div class="history-item"><div style="flex:1"><div style="font-size:12px;font-weight:500">Climate change — who bears the cost?</div><div style="font-size:11px;color:var(--text-muted)">Jun 8 · Environment · <span class="stars">★★★★★</span> rated 4.7</div></div><span class="history-result result-listened">Listened</span></div>
+          <div class="history-item"><div style="flex:1"><div style="font-size:12px;font-weight:500">College fees — exploitation or investment?</div><div style="font-size:11px;color:var(--text-muted)">May 30 · Education · <span class="stars">★★★★</span> rated 4.3</div></div><span class="history-result result-participated">Participated</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRIEVANCE -->
+  <div class="page" id="page-grievance">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="grievance-wrap">
+        <div style="font-size:15px;font-weight:500;margin-bottom:4px">Submit a grievance</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:1rem">Report issues with users, debates, or the platform</div>
+        <div class="profile-card" style="background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem">
+          <div class="form-group"><div class="form-label">Category</div><select class="form-input"><option>Harassment by a user</option><option>Inappropriate content in debate</option><option>Technical issue</option><option>Moderator misconduct</option><option>Other</option></select></div>
+          <div class="form-group"><div class="form-label">Against whom <span style="color:var(--text-muted)">(optional)</span></div><input class="form-input" placeholder="Username or debate title"></div>
+          <div class="form-group"><div class="form-label">Description</div><textarea class="form-input" rows="4" placeholder="Describe the issue in detail..."></textarea></div>
+          <button class="btn-orange" style="width:100%;padding:9px;font-size:13px">Submit grievance</button>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:500;margin-bottom:4px">My grievances</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:1rem">Track status of your submitted complaints</div>
+        <div class="grievance-status-card">
+          <div class="gs-top"><div class="gs-title">Harassment by Ravi Verma</div><span class="gs-status gs-pending">Pending</span></div>
+          <div class="gs-desc">Abusive language directed at me during the Budget debate chat.</div>
+          <div class="gs-date">Submitted Jul 5 · Admin notified</div>
+        </div>
+        <div class="grievance-status-card">
+          <div class="gs-top"><div class="gs-title">Technical — Meet link not working</div><span class="gs-status gs-resolved">Resolved</span></div>
+          <div class="gs-desc">Google Meet link for the TN debate was expired when I clicked.</div>
+          <div class="gs-date">Submitted Jun 28 · Resolved Jun 29</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let loggedIn=false;
+function showPage(id,navEl){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg)pg.classList.add('active');
+  if(id==='home-auth'){
+    loggedIn=true;
+    document.getElementById('auth-btns').style.display='none';
+    document.getElementById('user-nav').style.display='flex';
+    document.getElementById('main-nav').style.display='flex';
+  }
+  if(navEl){
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    navEl.classList.add('active');
+  }
+  const pageNavMap={browse:1,recordings:2,resources:3,grievance:4};
+  if(pageNavMap[id]!==undefined){
+    const tabs=document.querySelectorAll('.nav-tab');
+    tabs.forEach(t=>t.classList.remove('active'));
+    tabs[pageNavMap[id]]&&tabs[pageNavMap[id]].classList.add('active');
+  }
+}
+document.querySelectorAll('.interest-chip,.filter-chip,.filter-btn').forEach(chip=>{
+  chip.addEventListener('click',function(){
+    if(this.classList.contains('filter-chip')){
+      this.closest('.filter-bar').querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+      this.classList.add('active');
+    } else if(this.classList.contains('filter-btn')){
+      this.closest('.filters').querySelectorAll('.filter-btn').forEach(c=>c.classList.remove('active'));
+      this.classList.add('active');
+    } else {
+      this.classList.toggle('selected');
+    }
+  });
+});
+document.querySelectorAll('.role-card').forEach(card=>{
+  card.addEventListener('click',function(){
+    this.closest('.role-grid').querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
+    this.classList.add('selected');
+  });
+});
+</script>
