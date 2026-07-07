@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DebateBlitz — Landing Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root{--font-sans:'Inter',-apple-system,sans-serif;--text-primary:#111827;--text-secondary:#4b5563;--text-muted:#9ca3af;--text-accent:#2563eb;--text-success:#166534;--text-danger:#dc2626;--surface-1:#f9fafb;--surface-2:#ffffff;--border:#e5e7eb;--border-strong:#9ca3af;--border-accent:#2563eb;--bg-accent:#eff6ff;--bg-success:#dcfce7;--radius:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:#f3f4f6;color:var(--text-primary);min-height:100vh}
+.page-wrapper{max-width:1100px;margin:0 auto;background:#fff;min-height:100vh;box-shadow:0 0 0 1px #e5e7eb}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:0.5px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:38px;height:38px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center}
+.logo-text{font-size:18px;font-weight:500;color:var(--text-primary);letter-spacing:-0.3px}
+.logo-text span{color:#e85d26}
+.nav-links{display:flex;gap:1.5rem;align-items:center}
+.nav-links a{font-size:14px;color:var(--text-secondary);text-decoration:none}
+.btn-primary{background:#1a1a2e;color:#fff;padding:8px 18px;border-radius:var(--radius);font-size:14px;border:none;cursor:pointer;font-weight:500}
+.btn-outline{background:transparent;color:var(--text-primary);padding:8px 18px;border-radius:var(--radius);font-size:14px;border:0.5px solid var(--border-strong);cursor:pointer}
+.hero{padding:4rem 2rem 3rem;text-align:center;max-width:700px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg-accent);color:#1e40af;font-size:12px;padding:4px 12px;border-radius:20px;margin-bottom:1.5rem}
+.hero h1{font-size:42px;font-weight:500;line-height:1.15;margin-bottom:1rem;letter-spacing:-1px}
+.hero h1 span{color:#e85d26}
+.hero p{font-size:16px;color:var(--text-secondary);line-height:1.7;margin-bottom:2rem;max-width:520px;margin-left:auto;margin-right:auto}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
+.btn-orange{background:#e85d26;color:#fff;padding:10px 24px;border-radius:var(--radius);font-size:15px;border:none;cursor:pointer;font-weight:500}
+.stats{display:flex;gap:2rem;justify-content:center;padding:1.5rem 0;border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);margin:0 2rem;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-size:22px;font-weight:500}
+.stat-label{font-size:12px;color:var(--text-muted);margin-top:2px}
+.section{padding:2.5rem 2rem}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.section-title{font-size:18px;font-weight:500}
+.section-link{font-size:13px;color:var(--text-accent);text-decoration:none}
+.live-badge{display:inline-flex;align-items:center;gap:5px;background:#fee2e2;color:#991b1b;font-size:11px;padding:3px 8px;border-radius:20px;font-weight:500}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#dc2626;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.debate-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.debate-card{background:var(--surface-1);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;cursor:pointer;transition:border-color 0.15s}
+.debate-card:hover{border-color:var(--border-strong)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.card-cat{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px}
+.card-title{font-size:15px;font-weight:500;line-height:1.4;margin-bottom:8px}
+.card-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text-secondary)}
+.viewers-bar{height:3px;background:#e5e7eb;border-radius:2px;margin-top:10px}
+.viewers-fill{height:100%;border-radius:2px;background:#e85d26}
+.upcoming-badge{background:var(--bg-success);color:var(--text-success);font-size:11px;padding:3px 8px;border-radius:20px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.filter-btn{padding:6px 14px;border-radius:20px;font-size:13px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);cursor:pointer}
+.filter-btn.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.rec-card{background:var(--surface-1);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer}
+.rec-thumb{height:110px;display:flex;align-items:center;justify-content:center}
+.play-btn{width:36px;height:36px;border-radius:50%;background:rgba(232,93,38,0.9);display:flex;align-items:center;justify-content:center}
+.rec-info{padding:10px 12px}
+.rec-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:6px}
+.rec-meta{font-size:11px;color:var(--text-muted)}
+.stars{color:#f59e0b;font-size:12px}
+.admin-section{background:var(--surface-1);border-radius:12px;margin:0 2rem 2rem;padding:1.5rem;border:0.5px solid var(--border)}
+.admin-title{font-size:16px;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem}
+.admin-card{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius);padding:12px}
+.admin-num{font-size:22px;font-weight:500}
+.admin-label{font-size:11px;color:var(--text-muted);margin-top:2px}
+.admin-delta{font-size:11px;color:var(--text-success);margin-top:4px}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mini-chart{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius);padding:12px}
+.mini-chart-title{font-size:12px;color:var(--text-muted);margin-bottom:10px}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bar-label{font-size:11px;color:var(--text-secondary);width:60px;text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:8px;background:var(--surface-1);border-radius:4px;overflow:hidden;border:0.5px solid var(--border)}
+.bar-fill{height:100%;border-radius:4px}
+.bar-val{font-size:11px;color:var(--text-muted);width:32px;flex-shrink:0}
+.lang-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.lang-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.lang-label{font-size:12px;color:var(--text-secondary);flex:1}
+.lang-val{font-size:12px;font-weight:500}
+.engagement-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:12px}
+.engagement-row:last-child{border-bottom:none}
+.user-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.user-table th{text-align:left;color:var(--text-muted);padding:4px 8px;font-weight:400;border-bottom:0.5px solid var(--border)}
+.user-table td{padding:6px 8px;border-bottom:0.5px solid var(--border)}
+.user-table tr:last-child td{border-bottom:none}
+.role-badge{font-size:10px;padding:2px 7px;border-radius:10px}
+.role-debator{background:#fef3c7;color:#92400e}
+.role-listener{background:#e0f2fe;color:#0c4a6e}
+.role-moderator{background:#f3e8ff;color:#6b21a8}
+.footer{padding:1.5rem 2rem;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.footer-text{font-size:12px;color:var(--text-muted)}
+.footer-links{display:flex;gap:1rem}
+.footer-links a{font-size:12px;color:var(--text-muted);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="5" rx="1" fill="#fff"/><rect x="8" y="19" width="8" height="2" rx="1" fill="#fff"/><circle cx="12" cy="10" r="2.5" fill="#fff" opacity="0.3"/></svg>
+    </div>
+    <span class="logo-text">Debate<span>Blitz</span></span>
+  </div>
+  <div class="nav-links">
+    <a href="debateblitz-3-user-pages.html">Browse debates</a>
+    <a href="debateblitz-3-user-pages.html">Recordings</a>
+    <a href="debateblitz-3-user-pages.html">Resources</a>
+    <button class="btn-outline" style="margin-right:6px" onclick="window.location='debateblitz-3-user-pages.html'">Log in</button>
+    <button class="btn-orange" onclick="window.location='debateblitz-3-user-pages.html'">Join free</button>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-badge">⚡ Live debates happening now</div>
+  <h1>Where great minds<br><span>clash &amp; connect</span></h1>
+  <p>Propose, watch, and participate in real debates — from college forums to national politics. Open to everyone, everywhere.</p>
+  <div class="hero-btns">
+    <button class="btn-orange" onclick="window.location='debateblitz-3-user-pages.html'">Watch live debates ↗</button>
+    <button class="btn-outline" style="padding:10px 24px;font-size:15px" onclick="window.location='debateblitz-4-propose.html'">Propose a debate</button>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="stat-num">12,480</div><div class="stat-label">Registered users</div></div>
+  <div class="stat"><div class="stat-num">3</div><div class="stat-label">Live now</div></div>
+  <div class="stat"><div class="stat-num">248</div><div class="stat-label">Debates completed</div></div>
+  <div class="stat"><div class="stat-num">47</div><div class="stat-label">Countries</div></div>
+  <div class="stat"><div class="stat-num">4.6 ★</div><div class="stat-label">Avg debate rating</div></div>
+</div>
+<div class="section">
+  <div class="section-header">
+    <div style="display:flex;align-items:center;gap:10px"><span class="section-title">Live now</span><span class="live-badge"><span class="live-dot"></span>3 active</span></div>
+    <a href="debateblitz-3-user-pages.html" class="section-link">View all</a>
+  </div>
+  <div class="debate-grid">
+    <div class="debate-card"><div class="card-top"><span class="card-cat">Politics</span><span class="live-badge"><span class="live-dot"></span>Live</span></div><div class="card-title">Modi vs Opposition — Budget 2025: Growth or burden?</div><div class="card-meta"><span class="meta-item">👥 1,240 watching</span><span class="meta-item">🕐 42 min in</span><span class="meta-item">🇮🇳</span></div><div class="viewers-bar"><div class="viewers-fill" style="width:82%"></div></div></div>
+    <div class="debate-card"><div class="card-top"><span class="card-cat">Sports</span><span class="live-badge"><span class="live-dot"></span>Live</span></div><div class="card-title">IPL should be banned — cricket or commerce?</div><div class="card-meta"><span class="meta-item">👥 876 watching</span><span class="meta-item">🕐 18 min in</span><span class="meta-item">🇮🇳</span></div><div class="viewers-bar"><div class="viewers-fill" style="width:60%"></div></div></div>
+    <div class="debate-card"><div class="card-top"><span class="card-cat">Technology</span><span class="live-badge"><span class="live-dot"></span>Live</span></div><div class="card-title">AI will replace 50% of jobs by 2030 — fact or fear?</div><div class="card-meta"><span class="meta-item">👥 542 watching</span><span class="meta-item">🕐 5 min in</span><span class="meta-item">🌍</span></div><div class="viewers-bar"><div class="viewers-fill" style="width:38%"></div></div></div>
+  </div>
+</div>
+<div class="section" style="padding-top:0">
+  <div class="section-header"><span class="section-title">Upcoming debates</span><a href="debateblitz-3-user-pages.html" class="section-link">View all</a></div>
+  <div class="debate-grid">
+    <div class="debate-card"><div class="card-top"><span class="card-cat">Politics</span><span class="upcoming-badge">Tomorrow, 6 PM</span></div><div class="card-title">TN CM — bold leadership or missed opportunity?</div><div class="card-meta"><span class="meta-item">👥 4 debators</span><span class="meta-item">Mod: Priya R.</span><span class="meta-item">🇮🇳</span></div></div>
+    <div class="debate-card"><div class="card-top"><span class="card-cat">Education</span><span class="upcoming-badge">Sat, 4 PM</span></div><div class="card-title">College fees in India — exploitation or investment?</div><div class="card-meta"><span class="meta-item">👥 2 debators</span><span class="meta-item">Mod: Rajan M.</span><span class="meta-item">🇮🇳</span></div></div>
+    <div class="debate-card"><div class="card-top"><span class="card-cat">Health</span><span class="upcoming-badge">Sun, 5 PM</span></div><div class="card-title">Junk food advertising — ban it or regulate it?</div><div class="card-meta"><span class="meta-item">👥 3 debators</span><span class="meta-item">Mod: Ayesha K.</span><span class="meta-item">🌍</span></div></div>
+  </div>
+</div>
+<div class="section" style="padding-top:0">
+  <div class="section-header"><span class="section-title">Watch recordings</span><a href="debateblitz-3-user-pages.html" class="section-link">Full library</a></div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter(this)">All</button>
+    <button class="filter-btn" onclick="setFilter(this)">Politics</button>
+    <button class="filter-btn" onclick="setFilter(this)">Sports</button>
+    <button class="filter-btn" onclick="setFilter(this)">Technology</button>
+    <button class="filter-btn" onclick="setFilter(this)">Health</button>
+    <button class="filter-btn" onclick="setFilter(this)">Education</button>
+  </div>
+  <div class="rec-grid">
+    <div class="rec-card"><div class="rec-thumb" style="background:#1a1a2e"><div class="play-btn"><svg viewBox="0 0 24 24" fill="#fff" width="14" height="14"><path d="M8 5v14l11-7z"/></svg></div></div><div class="rec-info"><div class="rec-title">India vs Pakistan — beyond cricket</div><div class="rec-meta"><span class="stars">★★★★★</span> 4.9 · 18.2k views · 🇮🇳</div></div></div>
+    <div class="rec-card"><div class="rec-thumb" style="background:#2d1b00"><div class="play-btn"><svg viewBox="0 0 24 24" fill="#fff" width="14" height="14"><path d="M8 5v14l11-7z"/></svg></div></div><div class="rec-info"><div class="rec-title">Climate change — who bears the cost?</div><div class="rec-meta"><span class="stars">★★★★★</span> 4.7 · 9.4k views · 🌍</div></div></div>
+    <div class="rec-card"><div class="rec-thumb" style="background:#0c2a1a"><div class="play-btn"><svg viewBox="0 0 24 24" fill="#fff" width="14" height="14"><path d="M8 5v14l11-7z"/></svg></div></div><div class="rec-info"><div class="rec-title">UPI vs cash — India's payment future</div><div class="rec-meta"><span class="stars">★★★★</span> 4.4 · 6.1k views · 🇮🇳</div></div></div>
+    <div class="rec-card"><div class="rec-thumb" style="background:#1a0a2e"><div class="play-btn"><svg viewBox="0 0 24 24" fill="#fff" width="14" height="14"><path d="M8 5v14l11-7z"/></svg></div></div><div class="rec-info"><div class="rec-title">Social media — democracy or disruption?</div><div class="rec-meta"><span class="stars">★★★★★</span> 4.8 · 12.7k views · 🌍</div></div></div>
+  </div>
+</div>
+<div class="admin-section">
+  <div class="admin-title">🛠 Admin dashboard — <a href="debateblitz-2-admin.html" style="color:#e85d26;text-decoration:none;font-size:13px">Open full admin →</a></div>
+  <div class="admin-grid">
+    <div class="admin-card"><div class="admin-num">12,480</div><div class="admin-label">Total users</div><div class="admin-delta">↑ 340 this week</div></div>
+    <div class="admin-card"><div class="admin-num">7,820</div><div class="admin-label">Debators</div><div class="admin-delta">↑ 210 this week</div></div>
+    <div class="admin-card"><div class="admin-num">4,120</div><div class="admin-label">Listeners</div><div class="admin-delta">↑ 98 this week</div></div>
+    <div class="admin-card"><div class="admin-num">540</div><div class="admin-label">Moderators</div><div class="admin-delta">↑ 32 this week</div></div>
+    <div class="admin-card"><div class="admin-num">248</div><div class="admin-label">Debates done</div><div class="admin-delta">↑ 18 this month</div></div>
+    <div class="admin-card"><div class="admin-num" style="color:#dc2626">1,840</div><div class="admin-label">Never returned</div><div class="admin-delta" style="color:#dc2626">↑ 42 this week</div></div>
+  </div>
+</div>
+<footer class="footer">
+  <span class="footer-text">© 2026 DebateBlitz. All rights reserved.</span>
+  <div class="footer-links">
+    <a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a>
+    <a href="debateblitz-3-user-pages.html">Grievance</a><a href="#">Contact</a>
+  </div>
+</footer>
+</div>
+<script>
+function setFilter(btn){
+  btn.closest('.filters').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
