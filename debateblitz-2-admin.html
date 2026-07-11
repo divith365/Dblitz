@@ -4,303 +4,503 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DebateBlitz — Admin Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
-:root{--font-sans:'Plus Jakarta Sans',-apple-system,sans-serif;--text-primary:#111827;--text-secondary:#4b5563;--text-muted:#9ca3af;--text-accent:#e85d26;--text-success:#166534;--text-danger:#dc2626;--surface-1:#f4f6fb;--surface-2:#ffffff;--border:#e5e7eb;--border-strong:#9ca3af;--bg-accent:#fff5f0;--bg-success:#dcfce7;--radius:10px}
+:root{
+  --font-sans:'Plus Jakarta Sans',-apple-system,sans-serif;
+  --text-primary:#111827;--text-secondary:#4b5563;--text-muted:#9ca3af;
+  --text-accent:#e85d26;--text-success:#166534;--text-danger:#dc2626;
+  --surface-1:#f4f6fb;--border:#e5e7eb;--radius:12px;
+  --sidebar-w:220px;--topbar-h:58px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans);background:#f3f4f6;color:var(--text-primary);font-size:15px;height:100vh;overflow:hidden}
-.layout{display:flex;height:100vh}
-.sidebar{width:210px;flex-shrink:0;border-right:none;padding:1rem 0;background:#0f0f1a;overflow-y:auto}
-.sidebar-logo{display:flex;align-items:center;gap:8px;padding:0 1rem 1rem;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:0.75rem}
-.logo-icon{width:30px;height:30px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.logo-text{font-size:15px;font-weight:500}.logo-text span{color:#e85d26}
-.back-home{display:flex;align-items:center;gap:6px;padding:6px 1rem;font-size:12px;color:rgba(255,255,255,0.4);cursor:pointer;text-decoration:none;margin-bottom:4px;transition:color 0.15s}.back-home:hover{color:rgba(255,255,255,0.8)}
-.nav-item{display:flex;align-items:center;gap:8px;padding:9px 1rem;font-size:13px;font-weight:600;color:rgba(255,255,255,0.55);cursor:pointer;border-left:2px solid transparent}
-.nav-item:hover{background:var(--surface-1);color:var(--text-primary)}
-.nav-item.active{color:#e85d26;border-left-color:#e85d26;background:rgba(232,93,38,0.08);font-weight:700;padding-left:1.2rem}
-.nav-item i{font-size:17px}
-.nav-section{font-size:11px;color:var(--text-muted);padding:8px 1rem 4px;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
-.main{flex:1;overflow:hidden;display:flex;flex-direction:column}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1.5rem;border-bottom:none;background:#16213e;flex-shrink:0;box-shadow:0 1px 0 rgba(255,255,255,0.06)}
-.topbar-title{font-size:18px;font-weight:800;color:#fff}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.admin-badge{background:#fef3c7;color:#92400e;font-size:12px;padding:3px 8px;border-radius:10px}
-.content{padding:1.25rem 1.5rem;overflow-y:auto;flex:1;background:#f0f2f8}
-.page{display:none}
-.page.active{display:block}
-.metric-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:1.25rem}
-.metric-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px 14px;position:relative;overflow:hidden}
-.metric-num{font-size:22px;font-weight:600}
-.metric-label{font-size:11px;color:var(--text-muted);margin-top:2px}
-.metric-delta{font-size:11px;margin-top:3px}
-.up{color:#059669}.down{color:#dc2626}
-.row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1.25rem}
-.chart-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
-.chart-title{font-size:13px;font-weight:500;margin-bottom:10px}
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.bar-label{font-size:12px;color:var(--text-secondary);width:55px;text-align:right;flex-shrink:0}
-.bar-track{flex:1;height:7px;background:var(--surface-1);border-radius:4px;overflow:hidden;border:0.5px solid var(--border)}
-.bar-fill{height:100%;border-radius:4px}
-.bar-val{font-size:12px;color:var(--text-muted);width:36px;text-align:right;flex-shrink:0}
-.eng-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--border);font-size:13px}
-.eng-row:last-child{border-bottom:none}
-.live-badge{display:inline-flex;align-items:center;gap:4px;background:#fee2e2;color:#991b1b;font-size:11px;padding:2px 7px;border-radius:10px;font-weight:500}
+body{font-family:var(--font-sans);background:#f0f2f8;color:var(--text-primary);font-size:14px;min-height:100vh}
+
+/* ════════════════════════════════
+   LOGIN SCREEN
+════════════════════════════════ */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0f0f1a 0%,#1a1035 60%,#0d1a2e 100%);
+  padding:1rem;
+}
+.login-card{
+  background:#fff;border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:380px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.3);
+  animation:slideUp 0.5s cubic-bezier(0.34,1.4,0.64,1);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(32px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.login-logo{display:flex;flex-direction:column;align-items:center;margin-bottom:2rem}
+.login-logo-icon{width:56px;height:56px;border-radius:50%;background:#0f0f1a;display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+.login-title{font-size:22px;font-weight:800;color:#111827}
+.login-sub{font-size:13px;color:#9ca3af;margin-top:3px}
+.login-badge{background:#fff5f0;border:1px solid #fcd9c9;border-radius:10px;padding:10px 14px;margin-bottom:1.5rem;display:flex;align-items:center;gap:8px;font-size:12px;color:#92400e;font-weight:600}
+.login-field{margin-bottom:1rem}
+.login-label{font-size:12px;color:#4b5563;margin-bottom:5px;display:block;font-weight:600}
+.login-input{width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #e5e7eb;background:#f9fafb;font-size:14px;font-family:var(--font-sans);transition:border-color 0.15s;outline:none}
+.login-input:focus{border-color:#e85d26;background:#fff}
+.login-btn{width:100%;padding:13px;background:linear-gradient(135deg,#e85d26,#f97316);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(232,93,38,0.35);transition:all 0.18s;margin-top:4px}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(232,93,38,0.4)}
+.login-links{display:flex;justify-content:space-between;margin-top:1.25rem}
+.login-links a{font-size:12px;color:#9ca3af;text-decoration:none;font-weight:500;transition:color 0.15s}
+.login-links a:hover{color:#e85d26}
+
+/* ════════════════════════════════
+   DASHBOARD LAYOUT
+════════════════════════════════ */
+#dashboard{display:none;min-height:100vh}
+
+/* MOBILE OVERLAY when sidebar open */
+#sidebar-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;
+  backdrop-filter:blur(2px);
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);
+  background:#0f0f1a;z-index:300;overflow-y:auto;
+  display:flex;flex-direction:column;
+  transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.sidebar-logo{
+  display:flex;align-items:center;gap:10px;padding:1.1rem 1rem 1rem;
+  border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;
+}
+.sidebar-logo-icon{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sidebar-logo-text{font-size:17px;font-weight:800;color:#fff}.sidebar-logo-text span{color:#e85d26}
+.sidebar-close{display:none;margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;cursor:pointer;padding:2px 4px;line-height:1}
+.sidebar-close:hover{color:#fff}
+.back-home{display:flex;align-items:center;gap:6px;padding:8px 1rem;font-size:12px;color:rgba(255,255,255,0.4);cursor:pointer;text-decoration:none;font-weight:600;transition:color 0.15s;margin-top:4px}
+.back-home:hover{color:rgba(255,255,255,0.8)}
+.nav-section{font-size:10px;color:rgba(255,255,255,0.3);padding:10px 1rem 4px;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;margin-top:4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 1rem;font-size:13px;font-weight:600;color:rgba(255,255,255,0.55);cursor:pointer;border-left:3px solid transparent;transition:all 0.15s}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:#fff;border-left-color:rgba(232,93,38,0.4);padding-left:1.3rem}
+.nav-item.active{color:#e85d26;border-left-color:#e85d26;background:rgba(232,93,38,0.08);padding-left:1.3rem}
+.nav-item i{font-size:17px;flex-shrink:0}
+.sidebar-footer{margin-top:auto;padding:1rem;border-top:1px solid rgba(255,255,255,0.08)}
+.sidebar-user{display:flex;align-items:center;gap:8px}
+.sidebar-avatar{width:32px;height:32px;border-radius:50%;background:#e85d26;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.sidebar-user-name{font-size:13px;font-weight:600;color:#fff}
+.sidebar-user-role{font-size:11px;color:rgba(255,255,255,0.4);font-weight:500}
+
+/* MAIN CONTENT */
+.main-wrap{
+  margin-left:var(--sidebar-w);
+  display:flex;flex-direction:column;min-height:100vh;
+  transition:margin-left 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* TOPBAR */
+.topbar{
+  position:sticky;top:0;z-index:100;height:var(--topbar-h);
+  background:#16213e;display:flex;align-items:center;
+  padding:0 1.5rem;gap:12px;
+  box-shadow:0 1px 0 rgba(255,255,255,0.06);flex-shrink:0;
+}
+.menu-toggle{
+  display:none;background:rgba(255,255,255,0.1);border:none;
+  color:#fff;width:36px;height:36px;border-radius:8px;cursor:pointer;
+  font-size:18px;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background 0.15s;
+}
+.menu-toggle:hover{background:rgba(255,255,255,0.18)}
+.topbar-title{font-size:17px;font-weight:800;color:#fff;flex:1}
+.topbar-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.live-pill{display:inline-flex;align-items:center;gap:5px;background:#fee2e2;color:#991b1b;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700}
 .live-dot{width:5px;height:5px;border-radius:50%;background:#dc2626;animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.upcoming-badge{background:var(--bg-success);color:var(--text-success);font-size:11px;padding:2px 7px;border-radius:10px}
-.badge{font-size:11px;padding:2px 7px;border-radius:10px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.admin-badge{background:rgba(232,93,38,0.18);color:#e85d26;font-size:11px;padding:3px 10px;border-radius:10px;font-weight:700;border:1px solid rgba(232,93,38,0.25)}
+.topbar-avatar{width:32px;height:32px;border-radius:50%;background:#e85d26;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(232,93,38,0.4);border:2px solid rgba(255,255,255,0.15)}
+
+/* CONTENT AREA */
+.content{padding:1.25rem 1.5rem;flex:1}
+.page{display:none}
+.page.active{display:block;animation:pageIn 0.3s ease}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ════════════════════════════════
+   COMPONENTS
+════════════════════════════════ */
+/* METRIC GRID */
+.metric-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:1.25rem}
+.metric-card{border-radius:14px;padding:14px;cursor:default;transition:transform 0.2s,box-shadow 0.2s;border:1px solid rgba(0,0,0,0.06)}
+.metric-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+.metric-num{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.metric-label{font-size:11px;color:var(--text-muted);margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px}
+.metric-delta{font-size:11px;margin-top:5px;font-weight:600}
+.up{color:#059669}.down{color:#dc2626}
+
+/* CHARTS ROW */
+.row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1.25rem}
+.chart-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1rem;box-shadow:0 1px 4px rgba(0,0,0,0.04);transition:transform 0.2s,box-shadow 0.2s}
+.chart-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+.chart-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text-primary)}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bar-label{font-size:11px;color:var(--text-secondary);width:52px;text-align:right;flex-shrink:0;font-weight:500}
+.bar-track{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;width:0%;transition:width 1.3s cubic-bezier(0.4,0,0.2,1)}
+.bar-val{font-size:11px;color:var(--text-muted);width:36px;text-align:right;flex-shrink:0;font-weight:500}
+.eng-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-secondary)}
+.eng-row:last-child{border-bottom:none}
+.eng-row span:last-child{font-weight:700;color:var(--text-primary)}
+
+/* TABLES */
+.table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.table-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:#fafafa}
+.table-head-title{font-size:14px;font-weight:700}
+.search-box{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--text-muted)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--text-muted);padding:10px 16px;font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap;font-size:11px;text-transform:uppercase;letter-spacing:0.3px;background:#fafafa}
+td{padding:10px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafeff}
+.avatar{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.user-cell{display:flex;align-items:center;gap:8px}
+
+/* BADGES */
+.badge{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700}
 .badge-politics{background:#ede9fe;color:#5b21b6}
 .badge-sports{background:#dbeafe;color:#1e40af}
 .badge-tech{background:#fef9c3;color:#854d0e}
 .badge-health{background:#dcfce7;color:#166534}
 .badge-edu{background:#fce7f3;color:#9d174d}
 .badge-env{background:#f0fdf4;color:#14532d}
-.table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
-.table-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--border)}
-.table-head-title{font-size:14px;font-weight:700}
-.search-box{display:flex;align-items:center;gap:6px;background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:5px 10px;font-size:13px;color:var(--text-muted)}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;color:var(--text-muted);padding:8px 14px;font-weight:400;border-bottom:0.5px solid var(--border);white-space:nowrap}
-td{padding:8px 14px;border-bottom:0.5px solid var(--border);vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--surface-1)}
-.avatar{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
-.user-cell{display:flex;align-items:center;gap:8px}
-.role-badge{font-size:11px;padding:2px 7px;border-radius:10px}
+.role-badge{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700}
 .role-debator{background:#fef3c7;color:#92400e}
 .role-listener{background:#e0f2fe;color:#0c4a6e}
 .role-moderator{background:#f3e8ff;color:#6b21a8}
-.blocked-badge{background:#fee2e2;color:#991b1b;font-size:11px;padding:2px 7px;border-radius:10px}
-.active-badge{background:#dcfce7;color:#166534;font-size:11px;padding:2px 7px;border-radius:10px}
-.btn-sm{padding:4px 10px;border-radius:var(--radius);font-size:12px;border:0.5px solid var(--border);background:var(--surface-1);cursor:pointer;color:var(--text-primary)}
-.btn-sm:hover{background:#f0f0f0}
+.active-badge{background:#dcfce7;color:#166534;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700}
+.blocked-badge{background:#fee2e2;color:#991b1b;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700}
+.upcoming-badge{background:#ecfdf5;color:#065f46;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;border:1px solid #a7f3d0}
+
+/* BUTTONS */
+.btn-sm{padding:5px 12px;border-radius:8px;font-size:12px;border:1px solid var(--border);background:#fff;cursor:pointer;color:var(--text-primary);font-weight:600;transition:all 0.15s}
+.btn-sm:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,0.1)}
 .btn-danger{border-color:#fca5a5;color:#dc2626;background:#fff5f5}
+.btn-danger:hover{background:#fee2e2}
 .btn-success{border-color:#86efac;color:#16a34a;background:#f0fdf4}
+.btn-success:hover{background:#dcfce7}
 .btn-primary-sm{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.btn-primary-sm:hover{background:#2d2d4a}
+
+/* FILTERS */
 .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
-.filter-btn{padding:5px 12px;border-radius:20px;font-size:13px;border:0.5px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer}
-.filter-btn.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.filter-btn{padding:6px 14px;border-radius:20px;font-size:12px;border:1.5px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer;font-weight:600;transition:all 0.15s}
+.filter-btn.active,.filter-btn:hover{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+
+/* DEBATE MONITOR */
 .debate-monitor-card{background:#fff;border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-.dm-header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--border)}
-.dm-title{font-size:13px;font-weight:500}
+.dm-header{padding:12px 16px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--border);background:#fafafa;gap:10px;flex-wrap:wrap}
+.dm-title{font-size:14px;font-weight:700}
 .dm-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
-.dm-section{padding:10px 14px;border-right:0.5px solid var(--border)}
+.dm-section{padding:12px 16px;border-right:1px solid var(--border)}
 .dm-section:last-child{border-right:none}
-.dm-section-title{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
-.participant-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.participant-name{font-size:13px;flex:1}
+.dm-section-title{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;font-weight:700}
+.participant-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.participant-name{font-size:13px;font-weight:600;flex:1}
 .participant-role{font-size:11px;color:var(--text-muted)}
-.viewer-stat{text-align:center;padding:6px 0}
-.viewer-num{font-size:24px;font-weight:500;color:#e85d26}
-.viewer-label{font-size:12px;color:var(--text-muted)}
-.scheduled-card{background:#fff;border:1px solid var(--border);border-radius:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-.sc-header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--border)}
+.viewer-num{font-size:28px;font-weight:800;color:#e85d26;line-height:1;font-variant-numeric:tabular-nums}
+.viewer-label{font-size:11px;color:var(--text-muted);margin-top:2px;font-weight:600}
+.mini-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.mini-stat{text-align:center;padding:6px;background:#f4f6fb;border-radius:8px}
+.mini-stat-num{font-size:16px;font-weight:700}
+.mini-stat-label{font-size:10px;color:var(--text-muted);font-weight:600}
+
+/* SCHEDULED */
+.scheduled-card{background:#fff;border:1px solid var(--border);border-radius:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);overflow:hidden}
+.sc-header{padding:12px 16px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--border);background:#fafafa;gap:10px;flex-wrap:wrap}
 .sc-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
-.sc-section{padding:10px 14px;border-right:0.5px solid var(--border)}
+.sc-section{padding:12px 16px;border-right:1px solid var(--border)}
 .sc-section:last-child{border-right:none}
-.sc-section-title{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
-.interest-person{display:flex;align-items:center;gap:6px;margin-bottom:5px;font-size:13px}
-.count-pill{display:inline-flex;align-items:center;justify-content:center;background:#e85d26;color:#fff;font-size:11px;font-weight:500;padding:1px 7px;border-radius:10px}
-.grievance-cat{font-size:11px;padding:2px 7px;border-radius:10px}
+.sc-section-title{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;font-weight:700}
+.interest-person{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:13px;font-weight:500}
+.count-pill{display:inline-flex;align-items:center;justify-content:center;background:#e85d26;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1rem}
+.tab{padding:9px 18px;font-size:13px;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;font-weight:600;transition:all 0.15s}
+.tab:hover{color:var(--text-primary)}
+.tab.active{color:#e85d26;border-bottom-color:#e85d26}
+
+/* GRIEVANCE */
+.grievance-cat{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700}
 .cat-harassment{background:#fee2e2;color:#991b1b}
 .cat-technical{background:#dbeafe;color:#1e40af}
 .cat-content{background:#fef9c3;color:#854d0e}
 .pending-dot{width:7px;height:7px;border-radius:50%;background:#f59e0b;flex-shrink:0}
 .resolved-dot{width:7px;height:7px;border-radius:50%;background:#10b981;flex-shrink:0}
-.tabs{display:flex;gap:0;border-bottom:0.5px solid var(--border);margin-bottom:1rem}
-.tab{padding:8px 16px;font-size:13px;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent}
-.tab.active{color:#e85d26;border-bottom-color:#e85d26;font-weight:500}
+.status-cell{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600}
 .blocked-reason{font-size:12px;color:var(--text-muted);font-style:italic}
-.section-sub{font-size:13px;color:var(--text-muted);margin-bottom:1rem}
+.section-sub{font-size:13px;color:var(--text-muted);margin-bottom:1rem;font-weight:500}
 
-/* ── NAV HOVER ── */
-.nav-item{transition:all 0.15s ease}
-.nav-item:hover{background:rgba(255,255,255,0.06);color:#fff;padding-left:1.2rem;border-left-color:#e85d26}
-.nav-item.active{padding-left:1.2rem}
-
-/* ── METRIC CARDS ── */
-.metric-card{transition:transform 0.2s,box-shadow 0.2s}
-.metric-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.09)}
-.chart-card{transition:transform 0.2s,box-shadow 0.2s}
-.chart-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-.btn-sm{transition:all 0.15s}
-.btn-sm:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,0.1)}
-.btn-success{transition:all 0.15s}
-.btn-success:hover{background:#dcfce7;transform:translateY(-1px)}
-.btn-danger{transition:all 0.15s}
-.btn-danger:hover{background:#fee2e2;transform:translateY(-1px)}
-
-/* ── TABLE ROW HOVER ── */
-tr{transition:background 0.12s}
-
-/* ── PAGE TRANSITIONS ── */
-.page{animation:none}
-.page.active{animation:pageIn 0.3s ease}
-@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── COUNTER NUMBERS ── */
-.metric-num,.admin-num{font-variant-numeric:tabular-nums;transition:color 0.3s}
-
-/* ── LOGIN SCREEN ANIMATION ── */
-#admin-login-screen > div{animation:slideUp 0.5s cubic-bezier(0.34,1.4,0.64,1)}
-@keyframes slideUp{from{opacity:0;transform:translateY(32px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-
-/* ── SCROLL REVEAL ── */
-.scroll-reveal{opacity:0;transform:translateY(14px);transition:opacity 0.4s ease,transform 0.4s ease}
-.scroll-reveal.visible{opacity:1;transform:translateY(0)}
-
-/* ── BAR FILL ANIMATION ── */
-.bar-fill{width:0%;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
-.bar-fill.animated{width:var(--target-width)}
+/* SCROLL REVEAL */
+.sr{opacity:0;transform:translateY(12px);transition:opacity 0.4s ease,transform 0.4s ease}
+.sr.visible{opacity:1;transform:translateY(0)}
 
 body{animation:pageFade 0.35s ease}
 @keyframes pageFade{from{opacity:0}to{opacity:1}}
+
+/* ════════════════════════════════
+   MOBILE STYLES  ≤ 768px
+════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Sidebar hidden off-screen by default */
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-close{display:flex}
+
+  /* Overlay visible when sidebar open */
+  #sidebar-overlay.show{display:block}
+
+  /* Main takes full width */
+  .main-wrap{margin-left:0}
+
+  /* Menu toggle visible */
+  .menu-toggle{display:flex}
+
+  /* Topbar */
+  .topbar{padding:0 1rem}
+  .topbar-title{font-size:15px}
+  .admin-badge{display:none}
+
+  /* Metric grid: 2 columns */
+  .metric-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .metric-num{font-size:20px}
+  .metric-label{font-size:10px}
+  .metric-delta{font-size:10px}
+
+  /* Chart rows: single column */
+  .row2{grid-template-columns:1fr;gap:10px}
+  .chart-card{padding:0.85rem}
+  .chart-title{font-size:13px}
+
+  /* Bar labels */
+  .bar-label{width:44px;font-size:10px}
+  .bar-val{font-size:10px;width:34px}
+
+  /* Content padding */
+  .content{padding:1rem}
+
+  /* Debate monitor: stack sections vertically */
+  .dm-body{grid-template-columns:1fr}
+  .dm-section{border-right:none;border-bottom:1px solid var(--border);padding:10px 14px}
+  .dm-section:last-child{border-bottom:none}
+  .dm-header{padding:10px 14px}
+  .dm-title{font-size:13px}
+
+  /* Scheduled: stack sections */
+  .sc-body{grid-template-columns:1fr}
+  .sc-section{border-right:none;border-bottom:1px solid var(--border);padding:10px 14px}
+  .sc-section:last-child{border-bottom:none}
+
+  /* Tables: card style on mobile */
+  .table-wrap{border-radius:12px}
+  table{font-size:12px}
+  th{padding:8px 10px;font-size:10px}
+  td{padding:8px 10px}
+  .table-head{padding:10px 12px;flex-wrap:wrap;gap:8px}
+  .search-box{width:100%}
+
+  /* Hide less important columns on mobile */
+  .hide-mobile{display:none}
+
+  /* Filters wrap */
+  .filters{gap:5px}
+  .filter-btn{padding:5px 10px;font-size:11px}
+
+  /* Tabs scroll */
+  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;flex-wrap:nowrap}
+  .tab{padding:8px 14px;font-size:12px;flex-shrink:0}
+
+  /* Buttons */
+  .btn-sm{padding:4px 8px;font-size:11px}
+}
+
+@media (max-width: 420px) {
+  .metric-grid{grid-template-columns:1fr 1fr;gap:6px}
+  .metric-num{font-size:18px}
+  .topbar-title{font-size:14px}
+  .live-pill{display:none}
+  .content{padding:0.75rem}
+  .row2{gap:8px}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══════════ ADMIN LOGIN SCREEN ═══════════ -->
-<div id="admin-login-screen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f3f4f6">
-  <div style="background:#fff;border:0.5px solid #e5e7eb;border-radius:16px;padding:2.5rem;width:100%;max-width:380px;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
-    <div style="text-align:center;margin-bottom:2rem">
-      <div style="width:56px;height:56px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
-        <svg viewBox="0 0 24 24" fill="none" width="26" height="26"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="4" rx="1" fill="#fff"/><rect x="8" y="18" width="8" height="2" rx="1" fill="#fff"/></svg>
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" width="28" height="28"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="5" rx="1" fill="#fff"/><rect x="8" y="19" width="8" height="2" rx="1" fill="#fff"/></svg>
       </div>
-      <div style="font-size:20px;font-weight:600;color:#111827">DebateBlitz</div>
-      <div style="font-size:13px;color:#6b7280;margin-top:4px">Admin portal</div>
+      <div class="login-title">DebateBlitz Admin</div>
+      <div class="login-sub">Restricted — authorised personnel only</div>
     </div>
-    <div style="background:#fff5f0;border:0.5px solid #fcd9c9;border-radius:8px;padding:10px 14px;margin-bottom:1.5rem;display:flex;align-items:center;gap:8px">
-      <span style="font-size:17px">🛡</span>
-      <span style="font-size:13px;color:#92400e">Restricted access — authorised personnel only</span>
+    <div class="login-badge">🛡 Admin portal — secure access</div>
+    <div class="login-field">
+      <label class="login-label">Admin email</label>
+      <input class="login-input" type="email" value="admin@debateblitz.com" placeholder="admin@debateblitz.com">
     </div>
-    <div style="margin-bottom:1rem">
-      <div style="font-size:13px;color:#4b5563;margin-bottom:5px">Admin email</div>
-      <input type="email" placeholder="admin@debateblitz.com" value="admin@debateblitz.com" style="width:100%;padding:10px 12px;border-radius:8px;border:0.5px solid #e5e7eb;background:#f9fafb;font-size:13px;font-family:inherit;box-sizing:border-box">
+    <div class="login-field">
+      <label class="login-label">Password</label>
+      <input class="login-input" type="password" value="supersecret" placeholder="••••••••••">
     </div>
-    <div style="margin-bottom:1.5rem">
-      <div style="font-size:13px;color:#4b5563;margin-bottom:5px">Password</div>
-      <input type="password" placeholder="••••••••••" value="supersecret" style="width:100%;padding:10px 12px;border-radius:8px;border:0.5px solid #e5e7eb;background:#f9fafb;font-size:13px;font-family:inherit;box-sizing:border-box">
-    </div>
-    <button onclick="enterDashboard()" style="width:100%;padding:12px;background:#1a1a2e;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:0.3px">Sign in to Admin Dashboard →</button>
-    <div style="text-align:center;margin-top:1rem">
-      <a href="index.html" style="font-size:13px;color:#9ca3af;text-decoration:none">← Back to DebateBlitz site</a>
-    </div>
-    <div style="text-align:center;margin-top:8px">
-      <a href="debateblitz-3-user.html" style="font-size:13px;color:#9ca3af;text-decoration:none">User login instead →</a>
+    <button class="login-btn" onclick="enterDashboard()">Sign in to Dashboard →</button>
+    <div class="login-links">
+      <a href="index.html">← Back to site</a>
+      <a href="debateblitz-3-user.html">User login →</a>
     </div>
   </div>
 </div>
 
-<!-- ═══════════ ADMIN DASHBOARD (hidden until login) ═══════════ -->
-<div id="admin-dashboard" style="display:none">
-<div class="layout">
-  <div class="sidebar">
+<!-- ══════════════ DASHBOARD ══════════════ -->
+<div id="dashboard">
+
+  <!-- Sidebar overlay (mobile) -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" width="16" height="16"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="4" rx="1" fill="#fff"/><rect x="8" y="18" width="8" height="2" rx="1" fill="#fff"/></svg></div>
-      <span class="logo-text">Debate<span>Blitz</span></span>
+      <div class="sidebar-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="4" rx="1" fill="#fff"/><rect x="8" y="18" width="8" height="2" rx="1" fill="#fff"/></svg>
+      </div>
+      <span class="sidebar-logo-text">Debate<span>Blitz</span></span>
+      <button class="sidebar-close" onclick="closeSidebar()">✕</button>
     </div>
+
     <a href="index.html" class="back-home">← Back to site</a>
+
     <div class="nav-section">Overview</div>
     <div class="nav-item active" onclick="showPage('dashboard',this)"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
     <div class="nav-item" onclick="showPage('debates',this)"><i class="ti ti-microphone"></i> Live debates</div>
     <div class="nav-item" onclick="showPage('scheduled',this)"><i class="ti ti-calendar"></i> Scheduled</div>
+
     <div class="nav-section">Management</div>
     <div class="nav-item" onclick="showPage('proposals',this)"><i class="ti ti-clipboard-list"></i> Proposals</div>
     <div class="nav-item" onclick="showPage('users',this)"><i class="ti ti-users"></i> Users</div>
     <div class="nav-item" onclick="showPage('blocklist',this)"><i class="ti ti-ban"></i> Blocklist</div>
     <div class="nav-item" onclick="showPage('grievances',this)"><i class="ti ti-alert-circle"></i> Grievances</div>
+
     <div class="nav-section">Content</div>
     <div class="nav-item" onclick="showPage('recordings',this)"><i class="ti ti-video"></i> Recordings</div>
     <div class="nav-item" onclick="showPage('resources',this)"><i class="ti ti-books"></i> Resources</div>
     <div class="nav-item" onclick="showPage('categories',this)"><i class="ti ti-tag"></i> Categories</div>
-  </div>
-  <div class="main">
-    <div class="topbar">
-      <div class="topbar-title" id="page-title">Dashboard</div>
-      <div class="topbar-right">
-        <span class="live-badge"><span class="live-dot"></span>3 live now</span>
-        <span class="admin-badge">Super Admin</span>
-        <div style="width:28px;height:28px;border-radius:50%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:500">AD</div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">AD</div>
+        <div><div class="sidebar-user-name">Admin</div><div class="sidebar-user-role">Super Admin</div></div>
       </div>
     </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-wrap" id="main-wrap">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="page-title">Dashboard</div>
+      <div class="topbar-right">
+        <span class="live-pill"><span class="live-dot"></span>3 live</span>
+        <span class="admin-badge">Super Admin</span>
+        <div class="topbar-avatar">AD</div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
     <div class="content">
 
-      <!-- DASHBOARD -->
+      <!-- ── DASHBOARD ── -->
       <div class="page active" id="page-dashboard">
         <div class="metric-grid">
-          <div class="metric-card" style="background:linear-gradient(135deg,#fff8f5,#ffeee6)"><div class="metric-num">12,480</div><div class="metric-label">Total users</div><div class="metric-delta up">↑ 340 this week</div></div>
-          <div class="metric-card" style="background:linear-gradient(135deg,#f0f4ff,#e8eeff)"><div class="metric-num">7,820</div><div class="metric-label">Debators</div><div class="metric-delta up">↑ 210 this week</div></div>
-          <div class="metric-card" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)"><div class="metric-num">4,120</div><div class="metric-label">Listeners</div><div class="metric-delta up">↑ 98 this week</div></div>
-          <div class="metric-card" style="background:linear-gradient(135deg,#fdf4ff,#f3e8ff)"><div class="metric-num">540</div><div class="metric-label">Moderators</div><div class="metric-delta up">↑ 32 this week</div></div>
-          <div class="metric-card" style="background:linear-gradient(135deg,#fffbeb,#fef3c7)"><div class="metric-num">14</div><div class="metric-label">Blocked users</div><div class="metric-delta down">↑ 2 this week</div></div>
-          <div class="metric-card" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)"><div class="metric-num">248</div><div class="metric-label">Debates done</div><div class="metric-delta up">↑ 18 this month</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#fff8f5,#ffeee6)"><div class="metric-num" data-target="12480">0</div><div class="metric-label">Total users</div><div class="metric-delta up">↑ 340 this week</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#f0f4ff,#e8eeff)"><div class="metric-num" data-target="7820">0</div><div class="metric-label">Debators</div><div class="metric-delta up">↑ 210 this week</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)"><div class="metric-num" data-target="4120">0</div><div class="metric-label">Listeners</div><div class="metric-delta up">↑ 98 this week</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#fdf4ff,#f3e8ff)"><div class="metric-num" data-target="540">0</div><div class="metric-label">Moderators</div><div class="metric-delta up">↑ 32 this week</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#fffbeb,#fef3c7)"><div class="metric-num" data-target="14">0</div><div class="metric-label">Blocked</div><div class="metric-delta down">↑ 2 this week</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)"><div class="metric-num" data-target="248">0</div><div class="metric-label">Debates done</div><div class="metric-delta up">↑ 18 this month</div></div>
         </div>
         <div class="row2">
-          <div class="chart-card">
+          <div class="chart-card sr">
             <div class="chart-title">Users by country</div>
-            <div class="bar-row"><span class="bar-label">India</span><div class="bar-track"><div class="bar-fill" style="width:78%;background:#e85d26"></div></div><span class="bar-val">9,734</span></div>
-            <div class="bar-row"><span class="bar-label">USA</span><div class="bar-track"><div class="bar-fill" style="width:42%;background:#1a1a2e"></div></div><span class="bar-val">1,240</span></div>
-            <div class="bar-row"><span class="bar-label">UK</span><div class="bar-track"><div class="bar-fill" style="width:22%;background:#1a1a2e"></div></div><span class="bar-val">640</span></div>
-            <div class="bar-row"><span class="bar-label">Canada</span><div class="bar-track"><div class="bar-fill" style="width:14%;background:#1a1a2e"></div></div><span class="bar-val">420</span></div>
-            <div class="bar-row"><span class="bar-label">Others</span><div class="bar-track"><div class="bar-fill" style="width:8%;background:#9ca3af"></div></div><span class="bar-val">446</span></div>
+            <div class="bar-row"><span class="bar-label">India</span><div class="bar-track"><div class="bar-fill" style="background:#e85d26" data-w="78%"></div></div><span class="bar-val">9,734</span></div>
+            <div class="bar-row"><span class="bar-label">USA</span><div class="bar-track"><div class="bar-fill" style="background:#6366f1" data-w="42%"></div></div><span class="bar-val">1,240</span></div>
+            <div class="bar-row"><span class="bar-label">UK</span><div class="bar-track"><div class="bar-fill" style="background:#0ea5e9" data-w="22%"></div></div><span class="bar-val">640</span></div>
+            <div class="bar-row"><span class="bar-label">Canada</span><div class="bar-track"><div class="bar-fill" style="background:#10b981" data-w="14%"></div></div><span class="bar-val">420</span></div>
+            <div class="bar-row"><span class="bar-label">Others</span><div class="bar-track"><div class="bar-fill" style="background:#9ca3af" data-w="8%"></div></div><span class="bar-val">446</span></div>
           </div>
-          <div class="chart-card">
+          <div class="chart-card sr">
             <div class="chart-title">Language preference</div>
-            <div class="bar-row"><span class="bar-label">English</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:#e85d26"></div></div><span class="bar-val">8,240</span></div>
-            <div class="bar-row"><span class="bar-label">Hindi</span><div class="bar-track"><div class="bar-fill" style="width:48%;background:#1a1a2e"></div></div><span class="bar-val">2,180</span></div>
-            <div class="bar-row"><span class="bar-label">Tamil</span><div class="bar-track"><div class="bar-fill" style="width:22%;background:#0f766e"></div></div><span class="bar-val">980</span></div>
-            <div class="bar-row"><span class="bar-label">Kannada</span><div class="bar-track"><div class="bar-fill" style="width:14%;background:#7c3aed"></div></div><span class="bar-val">640</span></div>
-            <div class="bar-row"><span class="bar-label">Telugu</span><div class="bar-track"><div class="bar-fill" style="width:10%;background:#0369a1"></div></div><span class="bar-val">440</span></div>
+            <div class="bar-row"><span class="bar-label">English</span><div class="bar-track"><div class="bar-fill" style="background:#e85d26" data-w="80%"></div></div><span class="bar-val">8,240</span></div>
+            <div class="bar-row"><span class="bar-label">Hindi</span><div class="bar-track"><div class="bar-fill" style="background:#6366f1" data-w="48%"></div></div><span class="bar-val">2,180</span></div>
+            <div class="bar-row"><span class="bar-label">Tamil</span><div class="bar-track"><div class="bar-fill" style="background:#0f766e" data-w="22%"></div></div><span class="bar-val">980</span></div>
+            <div class="bar-row"><span class="bar-label">Kannada</span><div class="bar-track"><div class="bar-fill" style="background:#7c3aed" data-w="14%"></div></div><span class="bar-val">640</span></div>
+            <div class="bar-row"><span class="bar-label">Telugu</span><div class="bar-track"><div class="bar-fill" style="background:#0369a1" data-w="10%"></div></div><span class="bar-val">440</span></div>
           </div>
-          <div class="chart-card">
+          <div class="chart-card sr">
             <div class="chart-title">Engagement metrics</div>
-            <div class="eng-row"><span>Avg session time</span><span style="font-weight:500">24 min</span></div>
-            <div class="eng-row"><span>Avg video watch time</span><span style="font-weight:500">38 min</span></div>
-            <div class="eng-row"><span>Recording clicks today</span><span style="font-weight:500">1,842</span></div>
-            <div class="eng-row"><span>Login, never returned</span><span style="font-weight:500;color:#dc2626">14.7%</span></div>
-            <div class="eng-row"><span>Active last 7 days</span><span style="font-weight:500;color:#059669">68%</span></div>
-            <div class="eng-row"><span>Active last 30 days</span><span style="font-weight:500;color:#059669">82%</span></div>
-            <div class="eng-row"><span>Avg rating given</span><span style="font-weight:500">4.4 ★</span></div>
+            <div class="eng-row"><span>Avg session time</span><span>24 min</span></div>
+            <div class="eng-row"><span>Avg video watch time</span><span>38 min</span></div>
+            <div class="eng-row"><span>Recording clicks today</span><span>1,842</span></div>
+            <div class="eng-row"><span>Login, never returned</span><span style="color:#dc2626">14.7%</span></div>
+            <div class="eng-row"><span>Active last 7 days</span><span style="color:#059669">68%</span></div>
+            <div class="eng-row"><span>Active last 30 days</span><span style="color:#059669">82%</span></div>
+            <div class="eng-row"><span>Avg rating given</span><span>4.4 ★</span></div>
           </div>
         </div>
         <div class="row2">
-          <div class="chart-card">
+          <div class="chart-card sr">
             <div class="chart-title">Debates by category</div>
-            <div class="bar-row"><span class="bar-label">Politics</span><div class="bar-track"><div class="bar-fill" style="width:74%;background:#7c3aed"></div></div><span class="bar-val">84</span></div>
-            <div class="bar-row"><span class="bar-label">Sports</span><div class="bar-track"><div class="bar-fill" style="width:52%;background:#1e40af"></div></div><span class="bar-val">62</span></div>
-            <div class="bar-row"><span class="bar-label">Technology</span><div class="bar-track"><div class="bar-fill" style="width:38%;background:#854d0e"></div></div><span class="bar-val">44</span></div>
-            <div class="bar-row"><span class="bar-label">Health</span><div class="bar-track"><div class="bar-fill" style="width:28%;background:#166534"></div></div><span class="bar-val">32</span></div>
-            <div class="bar-row"><span class="bar-label">Education</span><div class="bar-track"><div class="bar-fill" style="width:18%;background:#9d174d"></div></div><span class="bar-val">26</span></div>
+            <div class="bar-row"><span class="bar-label">Politics</span><div class="bar-track"><div class="bar-fill" style="background:#7c3aed" data-w="74%"></div></div><span class="bar-val">84</span></div>
+            <div class="bar-row"><span class="bar-label">Sports</span><div class="bar-track"><div class="bar-fill" style="background:#1e40af" data-w="52%"></div></div><span class="bar-val">62</span></div>
+            <div class="bar-row"><span class="bar-label">Tech</span><div class="bar-track"><div class="bar-fill" style="background:#854d0e" data-w="38%"></div></div><span class="bar-val">44</span></div>
+            <div class="bar-row"><span class="bar-label">Health</span><div class="bar-track"><div class="bar-fill" style="background:#166534" data-w="28%"></div></div><span class="bar-val">32</span></div>
+            <div class="bar-row"><span class="bar-label">Education</span><div class="bar-track"><div class="bar-fill" style="background:#9d174d" data-w="18%"></div></div><span class="bar-val">26</span></div>
           </div>
-          <div class="chart-card">
+          <div class="chart-card sr">
             <div class="chart-title">Top debators this month</div>
             <table style="width:100%;font-size:12px;border-collapse:collapse">
-              <tr><th style="text-align:left;color:var(--text-muted);padding:3px 0;font-weight:400">Name</th><th style="color:var(--text-muted);font-weight:400">Debates</th><th style="color:var(--text-muted);font-weight:400">Rating</th><th style="color:var(--text-muted);font-weight:400">Country</th></tr>
-              <tr><td style="padding:4px 0">Arjun S.</td><td style="text-align:center">12</td><td style="text-align:center">4.9★</td><td style="text-align:center">🇮🇳</td></tr>
-              <tr><td style="padding:4px 0">Meera K.</td><td style="text-align:center">9</td><td style="text-align:center">4.8★</td><td style="text-align:center">🇮🇳</td></tr>
-              <tr><td style="padding:4px 0">Sarah J.</td><td style="text-align:center">8</td><td style="text-align:center">4.7★</td><td style="text-align:center">🇬🇧</td></tr>
-              <tr><td style="padding:4px 0">James O.</td><td style="text-align:center">7</td><td style="text-align:center">4.6★</td><td style="text-align:center">🇺🇸</td></tr>
+              <tr><th style="text-align:left;color:var(--text-muted);padding:4px 0;font-weight:600;font-size:10px;border-bottom:1px solid var(--border)">Name</th><th style="color:var(--text-muted);font-weight:600;font-size:10px;border-bottom:1px solid var(--border)">Debates</th><th style="color:var(--text-muted);font-weight:600;font-size:10px;border-bottom:1px solid var(--border)">Rating</th><th style="color:var(--text-muted);font-weight:600;font-size:10px;border-bottom:1px solid var(--border)">Country</th></tr>
+              <tr><td style="padding:6px 0;font-weight:600">Arjun S.</td><td style="text-align:center;font-weight:600">12</td><td style="text-align:center;color:#f59e0b;font-weight:700">4.9★</td><td style="text-align:center">🇮🇳</td></tr>
+              <tr><td style="padding:6px 0;font-weight:600">Meera K.</td><td style="text-align:center;font-weight:600">9</td><td style="text-align:center;color:#f59e0b;font-weight:700">4.8★</td><td style="text-align:center">🇮🇳</td></tr>
+              <tr><td style="padding:6px 0;font-weight:600">Sarah J.</td><td style="text-align:center;font-weight:600">8</td><td style="text-align:center;color:#f59e0b;font-weight:700">4.7★</td><td style="text-align:center">🇬🇧</td></tr>
+              <tr><td style="padding:6px 0;font-weight:600">James O.</td><td style="text-align:center;font-weight:600">7</td><td style="text-align:center;color:#f59e0b;font-weight:700">4.6★</td><td style="text-align:center">🇺🇸</td></tr>
             </table>
           </div>
-          <div class="chart-card">
-            <div class="chart-title">Pending actions</div>
-            <div class="eng-row"><span>Proposals awaiting approval</span><span style="font-weight:500;color:#f59e0b">8</span></div>
-            <div class="eng-row"><span>Grievances unresolved</span><span style="font-weight:500;color:#dc2626">5</span></div>
-            <div class="eng-row"><span>Moderator requests</span><span style="font-weight:500;color:#7c3aed">3</span></div>
-            <div class="eng-row"><span>Recordings pending review</span><span style="font-weight:500;color:#f59e0b">2</span></div>
-            <div class="eng-row"><span>Reports filed today</span><span style="font-weight:500;color:#dc2626">4</span></div>
+          <div class="chart-card sr">
+            <div class="chart-title">⚠️ Pending actions</div>
+            <div class="eng-row"><span>Proposals awaiting approval</span><span style="color:#f59e0b;font-weight:800">8</span></div>
+            <div class="eng-row"><span>Grievances unresolved</span><span style="color:#dc2626;font-weight:800">5</span></div>
+            <div class="eng-row"><span>Moderator requests</span><span style="color:#7c3aed;font-weight:800">3</span></div>
+            <div class="eng-row"><span>Recordings pending review</span><span style="color:#f59e0b;font-weight:800">2</span></div>
+            <div class="eng-row"><span>Reports filed today</span><span style="color:#dc2626;font-weight:800">4</span></div>
           </div>
         </div>
       </div>
 
-      <!-- LIVE DEBATES -->
+      <!-- ── LIVE DEBATES ── -->
       <div class="page" id="page-debates">
         <div class="section-sub">Real-time view of all ongoing debates.</div>
-        <div class="debate-monitor-card">
+        <div class="debate-monitor-card sr">
           <div class="dm-header">
-            <div><div class="dm-title">Modi vs Opposition — Budget 2025</div><div style="display:flex;gap:8px;margin-top:4px"><span class="live-badge"><span class="live-dot"></span>Live · 42 min</span><span class="badge badge-politics">Politics</span><span style="font-size:12px;color:var(--text-muted)">🇮🇳</span></div></div>
-            <div style="display:flex;gap:6px"><button class="btn-sm">View Meet</button><button class="btn-sm btn-danger">End debate</button></div>
+            <div style="flex:1">
+              <div class="dm-title">Modi vs Opposition — Budget 2025: Growth or burden?</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap">
+                <span class="live-pill"><span class="live-dot"></span>Live · 42 min</span>
+                <span class="badge badge-politics">Politics</span>
+                <span style="font-size:11px;color:var(--text-muted)">🇮🇳 India</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0">
+              <button class="btn-sm">View Meet</button>
+              <button class="btn-sm btn-danger">End</button>
+            </div>
           </div>
           <div class="dm-body">
             <div class="dm-section">
@@ -312,279 +512,318 @@ body{animation:pageFade 0.35s ease}
             </div>
             <div class="dm-section">
               <div class="dm-section-title">Live viewers</div>
-              <div class="viewer-stat"><div class="viewer-num">1,240</div><div class="viewer-label">watching now</div></div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
-                <div style="text-align:center;padding:6px;background:var(--surface-1);border-radius:var(--radius)"><div style="font-size:17px;font-weight:500">🇮🇳 980</div><div style="font-size:11px;color:var(--text-muted)">India</div></div>
-                <div style="text-align:center;padding:6px;background:var(--surface-1);border-radius:var(--radius)"><div style="font-size:17px;font-weight:500">🌍 260</div><div style="font-size:11px;color:var(--text-muted)">Others</div></div>
+              <div style="text-align:center;padding:8px 0"><div class="viewer-num" data-target="1240">0</div><div class="viewer-label">watching now</div></div>
+              <div class="mini-stat-grid">
+                <div class="mini-stat"><div class="mini-stat-num">🇮🇳 980</div><div class="mini-stat-label">India</div></div>
+                <div class="mini-stat"><div class="mini-stat-num">🌍 260</div><div class="mini-stat-label">Others</div></div>
               </div>
             </div>
             <div class="dm-section">
               <div class="dm-section-title">Session info</div>
-              <div class="eng-row"><span>Started</span><span style="font-weight:500">6:18 PM</span></div>
-              <div class="eng-row"><span>Duration</span><span style="font-weight:500">42 min</span></div>
-              <div class="eng-row"><span>Recording</span><span style="color:#059669">On</span></div>
-              <div class="eng-row"><span>Transcript</span><span style="color:#059669">Live</span></div>
-              <div class="eng-row"><span>Chat msgs</span><span style="font-weight:500">342</span></div>
+              <div class="eng-row"><span>Started</span><span>6:18 PM</span></div>
+              <div class="eng-row"><span>Duration</span><span>42 min</span></div>
+              <div class="eng-row"><span>Recording</span><span style="color:#059669">● On</span></div>
+              <div class="eng-row"><span>Transcript</span><span style="color:#059669">● Live</span></div>
+              <div class="eng-row"><span>Chat msgs</span><span>342</span></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SCHEDULED -->
+      <!-- ── SCHEDULED ── -->
       <div class="page" id="page-scheduled">
-        <div class="section-sub">Upcoming debates — who expressed interest to join.</div>
-        <div class="scheduled-card">
+        <div class="section-sub">Upcoming debates — interest counts and participant lists.</div>
+        <div class="scheduled-card sr">
           <div class="sc-header">
-            <div><div style="font-size:13px;font-weight:500">TN CM — bold leadership or missed opportunity?</div><div style="display:flex;gap:8px;margin-top:4px"><span class="upcoming-badge">Tomorrow · 6:00 PM</span><span class="badge badge-politics">Politics</span></div></div>
-            <div style="display:flex;gap:6px"><button class="btn-sm">Edit</button><button class="btn-sm btn-danger">Cancel</button></div>
+            <div style="flex:1">
+              <div style="font-size:14px;font-weight:700">TN CM — bold leadership or missed opportunity?</div>
+              <div style="display:flex;gap:8px;margin-top:5px;flex-wrap:wrap">
+                <span class="upcoming-badge">Tomorrow · 6:00 PM</span>
+                <span class="badge badge-politics">Politics</span>
+                <span style="font-size:11px;color:var(--text-muted)">Max 4 debators</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0"><button class="btn-sm">Edit</button><button class="btn-sm btn-danger">Cancel</button></div>
           </div>
           <div class="sc-body">
             <div class="sc-section">
-              <div class="sc-section-title">Debator interest <span class="count-pill">6 expressed</span></div>
-              <div class="interest-person"><div class="avatar" style="background:#fef3c7;color:#92400e;width:22px;height:22px;font-size:9px">AR</div><span style="flex:1">Anbu Raj</span><span style="font-size:11px;color:var(--text-muted)">🇮🇳 Tamil Nadu</span></div>
-              <div class="interest-person"><div class="avatar" style="background:#fee2e2;color:#991b1b;width:22px;height:22px;font-size:9px">SK</div><span style="flex:1">Sundar K.</span><span style="font-size:11px;color:var(--text-muted)">🇮🇳 Chennai</span></div>
-              <div class="interest-person"><div class="avatar" style="background:#dbeafe;color:#1e40af;width:22px;height:22px;font-size:9px">MV</div><span style="flex:1">Mani V.</span><span style="font-size:11px;color:var(--text-muted)">🇮🇳 Madurai</span></div>
-              <div style="font-size:12px;color:var(--text-muted);margin-top:4px">+3 more waiting</div>
+              <div class="sc-section-title">Debator interest <span class="count-pill">6</span></div>
+              <div class="interest-person"><div class="avatar" style="background:#fef3c7;color:#92400e;width:24px;height:24px;font-size:9px">AR</div><span style="flex:1;font-weight:600">Anbu Raj</span><span style="font-size:11px;color:var(--text-muted)">🇮🇳 Tamil Nadu</span></div>
+              <div class="interest-person"><div class="avatar" style="background:#fee2e2;color:#991b1b;width:24px;height:24px;font-size:9px">SK</div><span style="flex:1;font-weight:600">Sundar K.</span><span style="font-size:11px;color:var(--text-muted)">🇮🇳 Chennai</span></div>
+              <div class="interest-person"><div class="avatar" style="background:#dbeafe;color:#1e40af;width:24px;height:24px;font-size:9px">MV</div><span style="flex:1;font-weight:600">Mani V.</span><span style="font-size:11px;color:var(--text-muted)">🇮🇳 Madurai</span></div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:6px;font-style:italic">+3 more waiting · Admin selects final 4</div>
             </div>
             <div class="sc-section">
-              <div class="sc-section-title">Listener interest <span class="count-pill">284 registered</span></div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-                <div style="text-align:center;padding:6px;background:var(--surface-1);border-radius:var(--radius)"><div style="font-size:22px;font-weight:600;color:#e85d26">248</div><div style="font-size:11px;color:var(--text-muted)">🇮🇳 India</div></div>
-                <div style="text-align:center;padding:6px;background:var(--surface-1);border-radius:var(--radius)"><div style="font-size:22px;font-weight:600">36</div><div style="font-size:11px;color:var(--text-muted)">🌍 Others</div></div>
+              <div class="sc-section-title">Listener interest <span class="count-pill">284</span></div>
+              <div class="mini-stat-grid" style="margin-bottom:8px">
+                <div class="mini-stat"><div class="mini-stat-num" style="color:#e85d26">248</div><div class="mini-stat-label">🇮🇳 India</div></div>
+                <div class="mini-stat"><div class="mini-stat-num">36</div><div class="mini-stat-label">🌍 Others</div></div>
               </div>
+              <div style="font-size:11px;color:var(--text-muted)">🇮🇳 248 · 🇺🇸 18 · 🇬🇧 10 · 🇸🇬 8</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- PROPOSALS -->
+      <!-- ── PROPOSALS ── -->
       <div class="page" id="page-proposals">
-        <div class="table-wrap">
+        <div class="table-wrap sr">
           <div class="table-head"><span class="table-head-title">Pending proposals (8)</span><div class="search-box">🔍 Search proposals</div></div>
+          <div style="overflow-x:auto">
           <table>
-            <thead><tr><th>Topic</th><th>Proposed by</th><th>Category</th><th>Preferred date</th><th>Debators</th><th>Actions</th></tr></thead>
+            <thead><tr><th>Topic</th><th>Proposed by</th><th class="hide-mobile">Category</th><th class="hide-mobile">Date</th><th>Debators</th><th>Actions</th></tr></thead>
             <tbody>
-              <tr><td>Should India adopt 4-day work week?</td><td><div class="user-cell"><div class="avatar" style="background:#fef3c7;color:#92400e">AK</div>Arun K.</div></td><td><span class="badge badge-health">Health</span></td><td>Aug 10, 5 PM</td><td>2</td><td><button class="btn-sm btn-success" style="margin-right:4px">Approve</button><button class="btn-sm btn-danger">Reject</button></td></tr>
-              <tr><td>Crypto — future of money or Ponzi scheme?</td><td><div class="user-cell"><div class="avatar" style="background:#dbeafe;color:#1e40af">SJ</div>Sarah J.</div></td><td><span class="badge badge-tech">Tech</span></td><td>Aug 12, 7 PM</td><td>4</td><td><button class="btn-sm btn-success" style="margin-right:4px">Approve</button><button class="btn-sm btn-danger">Reject</button></td></tr>
-              <tr><td>NEET exam — fair or flawed?</td><td><div class="user-cell"><div class="avatar" style="background:#dcfce7;color:#166534">RM</div>Ravi M.</div></td><td><span class="badge badge-edu">Education</span></td><td>Aug 14, 6 PM</td><td>3</td><td><button class="btn-sm btn-success" style="margin-right:4px">Approve</button><button class="btn-sm btn-danger">Reject</button></td></tr>
-              <tr><td>Should voting be made mandatory?</td><td><div class="user-cell"><div class="avatar" style="background:#f3e8ff;color:#6b21a8">JP</div>James P.</div></td><td><span class="badge badge-politics">Politics</span></td><td>Aug 15, 8 PM</td><td>2</td><td><button class="btn-sm btn-success" style="margin-right:4px">Approve</button><button class="btn-sm btn-danger">Reject</button></td></tr>
+              <tr><td>Should India adopt 4-day work week?</td><td><div class="user-cell"><div class="avatar" style="background:#fef3c7;color:#92400e">AK</div>Arun K.</div></td><td class="hide-mobile"><span class="badge badge-health">Health</span></td><td class="hide-mobile">Aug 10</td><td>2</td><td><button class="btn-sm btn-success" style="margin-right:4px">✓</button><button class="btn-sm btn-danger">✗</button></td></tr>
+              <tr><td>Crypto — future or Ponzi scheme?</td><td><div class="user-cell"><div class="avatar" style="background:#dbeafe;color:#1e40af">SJ</div>Sarah J.</div></td><td class="hide-mobile"><span class="badge badge-tech">Tech</span></td><td class="hide-mobile">Aug 12</td><td>4</td><td><button class="btn-sm btn-success" style="margin-right:4px">✓</button><button class="btn-sm btn-danger">✗</button></td></tr>
+              <tr><td>NEET exam — fair or flawed?</td><td><div class="user-cell"><div class="avatar" style="background:#dcfce7;color:#166534">RM</div>Ravi M.</div></td><td class="hide-mobile"><span class="badge badge-edu">Education</span></td><td class="hide-mobile">Aug 14</td><td>3</td><td><button class="btn-sm btn-success" style="margin-right:4px">✓</button><button class="btn-sm btn-danger">✗</button></td></tr>
+              <tr><td>Should voting be mandatory?</td><td><div class="user-cell"><div class="avatar" style="background:#f3e8ff;color:#6b21a8">JP</div>James P.</div></td><td class="hide-mobile"><span class="badge badge-politics">Politics</span></td><td class="hide-mobile">Aug 15</td><td>2</td><td><button class="btn-sm btn-success" style="margin-right:4px">✓</button><button class="btn-sm btn-danger">✗</button></td></tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
-      <!-- USERS -->
+      <!-- ── USERS ── -->
       <div class="page" id="page-users">
         <div class="filters">
-          <button class="filter-btn active" onclick="setFilter(this)">All users</button>
+          <button class="filter-btn active" onclick="setFilter(this)">All</button>
           <button class="filter-btn" onclick="setFilter(this)">Debators</button>
           <button class="filter-btn" onclick="setFilter(this)">Listeners</button>
           <button class="filter-btn" onclick="setFilter(this)">Moderators</button>
-          <button class="filter-btn" onclick="setFilter(this)">Never returned</button>
-          <button class="filter-btn" onclick="setFilter(this)">India</button>
-          <button class="filter-btn" onclick="setFilter(this)">International</button>
+          <button class="filter-btn" onclick="setFilter(this)">No return</button>
+          <button class="filter-btn" onclick="setFilter(this)">🇮🇳 India</button>
         </div>
-        <div class="table-wrap">
+        <div class="table-wrap sr">
           <div class="table-head"><span class="table-head-title">All users (12,480)</span><div class="search-box">🔍 Search by name / phone</div></div>
+          <div style="overflow-x:auto">
           <table>
-            <thead><tr><th>User</th><th>Phone</th><th>Role</th><th>Country</th><th>Language</th><th>Joined</th><th>Last login</th><th>Status</th><th>Action</th></tr></thead>
+            <thead><tr><th>User</th><th class="hide-mobile">Phone</th><th>Role</th><th class="hide-mobile">Country</th><th class="hide-mobile">Joined</th><th>Last login</th><th>Status</th><th>Action</th></tr></thead>
             <tbody>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#fef3c7;color:#92400e">AS</div>Arjun Sharma</div></td><td>+91 98xxx</td><td><span class="role-badge role-debator">Debator</span></td><td>🇮🇳</td><td>EN, HI</td><td>Jan 12</td><td>Today</td><td><span class="active-badge">Active</span></td><td><button class="btn-sm btn-danger">Block</button></td></tr>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#dbeafe;color:#1e40af">SJ</div>Sarah Johnson</div></td><td>+44 79xxx</td><td><span class="role-badge role-listener">Listener</span></td><td>🇬🇧</td><td>EN</td><td>Feb 3</td><td>Yesterday</td><td><span class="active-badge">Active</span></td><td><button class="btn-sm btn-danger">Block</button></td></tr>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#f3e8ff;color:#6b21a8">PM</div>Priya Mehta</div></td><td>+91 87xxx</td><td><span class="role-badge role-moderator">Moderator</span></td><td>🇮🇳</td><td>EN, KN</td><td>Mar 8</td><td>Today</td><td><span class="active-badge">Active</span></td><td><button class="btn-sm btn-danger">Block</button></td></tr>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">JO</div>James Okafor</div></td><td>+1 415xxx</td><td><span class="role-badge role-listener">Listener</span></td><td>🇺🇸</td><td>EN</td><td>May 14</td><td>Never</td><td><span style="background:#fef9c3;color:#854d0e;font-size:11px;padding:2px 7px;border-radius:10px">No return</span></td><td><button class="btn-sm btn-danger">Block</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#fef3c7;color:#92400e">AS</div>Arjun Sharma</div></td><td class="hide-mobile">+91 98xxx</td><td><span class="role-badge role-debator">Debator</span></td><td class="hide-mobile">🇮🇳</td><td class="hide-mobile">Jan 12</td><td>Today</td><td><span class="active-badge">Active</span></td><td><button class="btn-sm btn-danger">Block</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#dbeafe;color:#1e40af">SJ</div>Sarah J.</div></td><td class="hide-mobile">+44 79xxx</td><td><span class="role-badge role-listener">Listener</span></td><td class="hide-mobile">🇬🇧</td><td class="hide-mobile">Feb 3</td><td>Yesterday</td><td><span class="active-badge">Active</span></td><td><button class="btn-sm btn-danger">Block</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#f3e8ff;color:#6b21a8">PM</div>Priya Mehta</div></td><td class="hide-mobile">+91 87xxx</td><td><span class="role-badge role-moderator">Moderator</span></td><td class="hide-mobile">🇮🇳</td><td class="hide-mobile">Mar 8</td><td>Today</td><td><span class="active-badge">Active</span></td><td><button class="btn-sm btn-danger">Block</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">JO</div>James O.</div></td><td class="hide-mobile">+1 415xxx</td><td><span class="role-badge role-listener">Listener</span></td><td class="hide-mobile">🇺🇸</td><td class="hide-mobile">May 14</td><td>Never</td><td><span style="background:#fef9c3;color:#854d0e;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700">No return</span></td><td><button class="btn-sm btn-danger">Block</button></td></tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
-      <!-- BLOCKLIST -->
+      <!-- ── BLOCKLIST ── -->
       <div class="page" id="page-blocklist">
         <div class="tabs">
           <div class="tab active" onclick="setTab(this)">Blocked users (14)</div>
           <div class="tab" onclick="setTab(this)">Block history</div>
         </div>
-        <div class="table-wrap">
-          <div class="table-head"><span class="table-head-title">Currently blocked</span><div class="search-box">🔍 Search blocked users</div></div>
+        <div class="table-wrap sr">
+          <div class="table-head"><span class="table-head-title">Currently blocked</span><div class="search-box">🔍 Search</div></div>
+          <div style="overflow-x:auto">
           <table>
-            <thead><tr><th>User</th><th>Phone</th><th>Role</th><th>Country</th><th>Blocked on</th><th>Reason</th><th>Action</th></tr></thead>
+            <thead><tr><th>User</th><th class="hide-mobile">Phone</th><th class="hide-mobile">Country</th><th>Blocked on</th><th>Reason</th><th>Action</th></tr></thead>
             <tbody>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">RV</div>Ravi Verma</div></td><td>+91 99xxx</td><td><span class="role-badge role-debator">Debator</span></td><td>🇮🇳</td><td>Jul 2</td><td><span class="blocked-reason">Abusive language in debate</span></td><td><button class="btn-sm btn-success" style="margin-right:4px">Unblock</button><button class="btn-sm">Details</button></td></tr>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">MT</div>Mike T.</div></td><td>+1 212xxx</td><td><span class="role-badge role-listener">Listener</span></td><td>🇺🇸</td><td>Jun 28</td><td><span class="blocked-reason">Spam in chat</span></td><td><button class="btn-sm btn-success" style="margin-right:4px">Unblock</button><button class="btn-sm">Details</button></td></tr>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">PK</div>Pradeep K.</div></td><td>+91 88xxx</td><td><span class="role-badge role-debator">Debator</span></td><td>🇮🇳</td><td>Jun 20</td><td><span class="blocked-reason">Fake credentials submitted</span></td><td><button class="btn-sm btn-success" style="margin-right:4px">Unblock</button><button class="btn-sm">Details</button></td></tr>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">SR</div>Sunil R.</div></td><td>+91 77xxx</td><td><span class="role-badge role-debator">Debator</span></td><td>🇮🇳</td><td>Jun 10</td><td><span class="blocked-reason">No-show 3 confirmed debates</span></td><td><button class="btn-sm btn-success" style="margin-right:4px">Unblock</button><button class="btn-sm">Details</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">RV</div>Ravi Verma</div></td><td class="hide-mobile">+91 99xxx</td><td class="hide-mobile">🇮🇳</td><td>Jul 2</td><td><span class="blocked-reason">Abusive language</span></td><td><button class="btn-sm btn-success">Unblock</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">MT</div>Mike T.</div></td><td class="hide-mobile">+1 212xxx</td><td class="hide-mobile">🇺🇸</td><td>Jun 28</td><td><span class="blocked-reason">Spam in chat</span></td><td><button class="btn-sm btn-success">Unblock</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">PK</div>Pradeep K.</div></td><td class="hide-mobile">+91 88xxx</td><td class="hide-mobile">🇮🇳</td><td>Jun 20</td><td><span class="blocked-reason">Fake credentials</span></td><td><button class="btn-sm btn-success">Unblock</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#fee2e2;color:#991b1b">SR</div>Sunil R.</div></td><td class="hide-mobile">+91 77xxx</td><td class="hide-mobile">🇮🇳</td><td>Jun 10</td><td><span class="blocked-reason">No-show 3 debates</span></td><td><button class="btn-sm btn-success">Unblock</button></td></tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
-      <!-- GRIEVANCES -->
+      <!-- ── GRIEVANCES ── -->
       <div class="page" id="page-grievances">
-        <div class="metric-grid" style="grid-template-columns:repeat(4,1fr)">
-          <div class="metric-card"><div class="metric-num">24</div><div class="metric-label">Total grievances</div></div>
-          <div class="metric-card"><div class="metric-num" style="color:#dc2626">5</div><div class="metric-label">Unresolved</div></div>
-          <div class="metric-card"><div class="metric-num" style="color:#059669">19</div><div class="metric-label">Resolved</div></div>
-          <div class="metric-card"><div class="metric-num" style="color:#f59e0b">4</div><div class="metric-label">Filed today</div></div>
+        <div class="metric-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:1rem">
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#f0f4ff,#e8eeff)"><div class="metric-num">24</div><div class="metric-label">Total</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#fff5f5,#fee2e2)"><div class="metric-num" style="color:#dc2626">5</div><div class="metric-label">Unresolved</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)"><div class="metric-num" style="color:#059669">19</div><div class="metric-label">Resolved</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#fffbeb,#fef3c7)"><div class="metric-num" style="color:#f59e0b">4</div><div class="metric-label">Today</div></div>
         </div>
-        <div class="table-wrap">
+        <div class="table-wrap sr">
           <div class="table-head"><span class="table-head-title">All grievances</span></div>
+          <div style="overflow-x:auto">
           <table>
-            <thead><tr><th>Filed by</th><th>Against</th><th>Category</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+            <thead><tr><th>Filed by</th><th class="hide-mobile">Against</th><th>Category</th><th class="hide-mobile">Date</th><th>Status</th><th>Action</th></tr></thead>
             <tbody>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#fef3c7;color:#92400e">AK</div>Arun K.</div></td><td>Ravi Verma</td><td><span class="grievance-cat cat-harassment">Harassment</span></td><td>Jul 5</td><td><span style="display:flex;align-items:center;gap:4px"><span class="pending-dot"></span>Pending</span></td><td><button class="btn-sm">Respond</button></td></tr>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#dbeafe;color:#1e40af">SJ</div>Sarah J.</div></td><td>Platform</td><td><span class="grievance-cat cat-technical">Technical</span></td><td>Jul 4</td><td><span style="display:flex;align-items:center;gap:4px"><span class="resolved-dot"></span>Resolved</span></td><td><button class="btn-sm">View</button></td></tr>
-              <tr><td><div class="user-cell"><div class="avatar" style="background:#dcfce7;color:#166534">MK</div>Meera K.</div></td><td>Mike T.</td><td><span class="grievance-cat cat-content">Content</span></td><td>Jul 3</td><td><span style="display:flex;align-items:center;gap:4px"><span class="pending-dot"></span>Pending</span></td><td><button class="btn-sm">Respond</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#fef3c7;color:#92400e">AK</div>Arun K.</div></td><td class="hide-mobile">Ravi Verma</td><td><span class="grievance-cat cat-harassment">Harassment</span></td><td class="hide-mobile">Jul 5</td><td><div class="status-cell"><span class="pending-dot"></span>Pending</div></td><td><button class="btn-sm">Respond</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#dbeafe;color:#1e40af">SJ</div>Sarah J.</div></td><td class="hide-mobile">Platform</td><td><span class="grievance-cat cat-technical">Technical</span></td><td class="hide-mobile">Jul 4</td><td><div class="status-cell"><span class="resolved-dot"></span>Resolved</div></td><td><button class="btn-sm">View</button></td></tr>
+              <tr><td><div class="user-cell"><div class="avatar" style="background:#dcfce7;color:#166534">MK</div>Meera K.</div></td><td class="hide-mobile">Mike T.</td><td><span class="grievance-cat cat-content">Content</span></td><td class="hide-mobile">Jul 3</td><td><div class="status-cell"><span class="pending-dot"></span>Pending</div></td><td><button class="btn-sm">Respond</button></td></tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
-      <!-- RECORDINGS -->
+      <!-- ── RECORDINGS ── -->
       <div class="page" id="page-recordings">
-        <div class="metric-grid" style="grid-template-columns:repeat(4,1fr)">
-          <div class="metric-card"><div class="metric-num">248</div><div class="metric-label">Total recordings</div></div>
-          <div class="metric-card"><div class="metric-num">94.2k</div><div class="metric-label">Total views</div></div>
-          <div class="metric-card"><div class="metric-num">38 min</div><div class="metric-label">Avg watch time</div></div>
-          <div class="metric-card"><div class="metric-num" style="color:#f59e0b">2</div><div class="metric-label">Pending review</div></div>
+        <div class="metric-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:1rem">
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#f0f4ff,#e8eeff)"><div class="metric-num">248</div><div class="metric-label">Total</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)"><div class="metric-num">94.2k</div><div class="metric-label">Total views</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#fff8f5,#ffeee6)"><div class="metric-num">38 min</div><div class="metric-label">Avg watch</div></div>
+          <div class="metric-card sr" style="background:linear-gradient(135deg,#fffbeb,#fef3c7)"><div class="metric-num" style="color:#f59e0b">2</div><div class="metric-label">Pending review</div></div>
         </div>
-        <div class="table-wrap">
+        <div class="table-wrap sr">
           <div class="table-head"><span class="table-head-title">All recordings</span></div>
+          <div style="overflow-x:auto">
           <table>
-            <thead><tr><th>Topic</th><th>Category</th><th>Date</th><th>Views</th><th>Watch time</th><th>Rating</th><th>Status</th></tr></thead>
+            <thead><tr><th>Topic</th><th class="hide-mobile">Category</th><th class="hide-mobile">Date</th><th>Views</th><th class="hide-mobile">Watch time</th><th>Rating</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td>Modi vs Opposition — Budget 2025</td><td><span class="badge badge-politics">Politics</span></td><td>Jul 5</td><td>18,240</td><td>42 min avg</td><td>4.9 ★</td><td><span class="active-badge">Published</span></td></tr>
-              <tr><td>India vs Pakistan — beyond cricket</td><td><span class="badge badge-sports">Sports</span></td><td>Jun 28</td><td>12,700</td><td>38 min avg</td><td>4.8 ★</td><td><span class="active-badge">Published</span></td></tr>
-              <tr><td>Climate change — who bears the cost?</td><td><span class="badge badge-env">Environment</span></td><td>Jun 20</td><td>9,400</td><td>35 min avg</td><td>4.7 ★</td><td><span class="active-badge">Published</span></td></tr>
-              <tr><td>AI will replace 50% of jobs</td><td><span class="badge badge-tech">Tech</span></td><td>Jun 15</td><td>6,100</td><td>29 min avg</td><td>4.4 ★</td><td><span style="background:#fef9c3;color:#854d0e;font-size:11px;padding:2px 7px;border-radius:10px">Under review</span></td></tr>
+              <tr><td>Modi vs Opposition — Budget 2025</td><td class="hide-mobile"><span class="badge badge-politics">Politics</span></td><td class="hide-mobile">Jul 5</td><td>18.2k</td><td class="hide-mobile">42 min avg</td><td style="color:#f59e0b;font-weight:700">4.9★</td><td><span class="active-badge">Published</span></td></tr>
+              <tr><td>India vs Pakistan — beyond cricket</td><td class="hide-mobile"><span class="badge badge-sports">Sports</span></td><td class="hide-mobile">Jun 28</td><td>12.7k</td><td class="hide-mobile">38 min avg</td><td style="color:#f59e0b;font-weight:700">4.8★</td><td><span class="active-badge">Published</span></td></tr>
+              <tr><td>Climate change — who bears the cost?</td><td class="hide-mobile"><span class="badge badge-env">Env</span></td><td class="hide-mobile">Jun 20</td><td>9.4k</td><td class="hide-mobile">35 min avg</td><td style="color:#f59e0b;font-weight:700">4.7★</td><td><span class="active-badge">Published</span></td></tr>
+              <tr><td>AI will replace 50% of jobs</td><td class="hide-mobile"><span class="badge badge-tech">Tech</span></td><td class="hide-mobile">Jun 15</td><td>6.1k</td><td class="hide-mobile">29 min avg</td><td style="color:#f59e0b;font-weight:700">4.4★</td><td><span style="background:#fef9c3;color:#854d0e;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700">Review</span></td></tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
-      <!-- RESOURCES -->
+      <!-- ── RESOURCES ── -->
       <div class="page" id="page-resources">
-        <div class="table-wrap">
-          <div class="table-head"><span class="table-head-title">Resources (12)</span><button class="btn-sm btn-primary-sm">+ Add resource</button></div>
+        <div class="table-wrap sr">
+          <div class="table-head"><span class="table-head-title">Resources (12)</span><button class="btn-sm btn-primary-sm">+ Add</button></div>
+          <div style="overflow-x:auto">
           <table>
-            <thead><tr><th>Title</th><th>Type</th><th>Category</th><th>Views</th><th>Actions</th></tr></thead>
+            <thead><tr><th>Title</th><th class="hide-mobile">Type</th><th class="hide-mobile">Category</th><th>Views</th><th>Actions</th></tr></thead>
             <tbody>
-              <tr><td>How to win any debate</td><td>Article</td><td>General</td><td>4,240</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Delete</button></td></tr>
-              <tr><td>Oxford debate format explained</td><td>Video</td><td>Format</td><td>3,180</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Delete</button></td></tr>
-              <tr><td>Logical fallacies to avoid</td><td>Article</td><td>Tips</td><td>2,640</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Delete</button></td></tr>
+              <tr><td>How to win any debate</td><td class="hide-mobile">Article</td><td class="hide-mobile">General</td><td>4,240</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Del</button></td></tr>
+              <tr><td>Oxford debate format explained</td><td class="hide-mobile">Video</td><td class="hide-mobile">Format</td><td>3,180</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Del</button></td></tr>
+              <tr><td>Logical fallacies to avoid</td><td class="hide-mobile">Article</td><td class="hide-mobile">Tips</td><td>2,640</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Del</button></td></tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
-      <!-- CATEGORIES -->
+      <!-- ── CATEGORIES ── -->
       <div class="page" id="page-categories">
-        <div class="table-wrap">
-          <div class="table-head"><span class="table-head-title">Debate categories</span><button class="btn-sm btn-primary-sm">+ Add category</button></div>
+        <div class="table-wrap sr">
+          <div class="table-head"><span class="table-head-title">Debate categories</span><button class="btn-sm btn-primary-sm">+ Add</button></div>
+          <div style="overflow-x:auto">
           <table>
-            <thead><tr><th>Category</th><th>Debates</th><th>Active</th><th>Listeners</th><th>Actions</th></tr></thead>
+            <thead><tr><th>Category</th><th>Debates</th><th class="hide-mobile">Active</th><th class="hide-mobile">Listeners</th><th>Actions</th></tr></thead>
             <tbody>
-              <tr><td><span class="badge badge-politics">Politics</span></td><td>84</td><td>2</td><td>4,200</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Disable</button></td></tr>
-              <tr><td><span class="badge badge-sports">Sports</span></td><td>62</td><td>1</td><td>2,800</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Disable</button></td></tr>
-              <tr><td><span class="badge badge-tech">Technology</span></td><td>44</td><td>1</td><td>1,940</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Disable</button></td></tr>
-              <tr><td><span class="badge badge-health">Health</span></td><td>32</td><td>0</td><td>1,240</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Disable</button></td></tr>
-              <tr><td><span class="badge badge-edu">Education</span></td><td>26</td><td>0</td><td>980</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Disable</button></td></tr>
+              <tr><td><span class="badge badge-politics">Politics</span></td><td>84</td><td class="hide-mobile">2</td><td class="hide-mobile">4,200</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Off</button></td></tr>
+              <tr><td><span class="badge badge-sports">Sports</span></td><td>62</td><td class="hide-mobile">1</td><td class="hide-mobile">2,800</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Off</button></td></tr>
+              <tr><td><span class="badge badge-tech">Technology</span></td><td>44</td><td class="hide-mobile">1</td><td class="hide-mobile">1,940</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Off</button></td></tr>
+              <tr><td><span class="badge badge-health">Health</span></td><td>32</td><td class="hide-mobile">0</td><td class="hide-mobile">1,240</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Off</button></td></tr>
+              <tr><td><span class="badge badge-edu">Education</span></td><td>26</td><td class="hide-mobile">0</td><td class="hide-mobile">980</td><td><button class="btn-sm" style="margin-right:4px">Edit</button><button class="btn-sm btn-danger">Off</button></td></tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
-    </div>
-  </div>
-</div>
-</div><!-- end #admin-dashboard -->
+    </div><!-- end .content -->
+  </div><!-- end .main-wrap -->
+</div><!-- end #dashboard -->
 
 <script>
-const titles={dashboard:'Dashboard',debates:'Live debates',scheduled:'Scheduled debates',proposals:'Debate proposals',users:'User management',blocklist:'Blocklist',grievances:'Grievances',recordings:'Recordings',resources:'Resources',categories:'Categories'};
+const pageTitles={dashboard:'Dashboard',debates:'Live debates',scheduled:'Scheduled debates',proposals:'Proposals',users:'User management',blocklist:'Blocklist',grievances:'Grievances',recordings:'Recordings',resources:'Resources',categories:'Categories'};
 
+/* ── LOGIN ── */
 function enterDashboard(){
-  document.getElementById('admin-login-screen').style.display='none';
-  const dash = document.getElementById('admin-dashboard');
-  dash.style.display='block';
-  // trigger counters after dashboard shows
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('dashboard').style.display='block';
   setTimeout(()=>{
-    animateAllCounters();
-    animateAllBars();
+    runCounters();
+    animateBars();
     attachScrollReveal();
     attachHoverCounters();
-  }, 100);
+  },120);
 }
 
-/* ── COUNTER ANIMATION ── */
-function animateCounter(el, target, duration=1600) {
-  const isFloat = target.toString().includes('.');
-  const num = parseFloat(target.toString().replace(/[^0-9.]/g,''));
-  const suffix = target.toString().replace(/[0-9.,]/g,'').trim();
-  const start = performance.now();
-  const update = (now) => {
-    const p = Math.min((now-start)/duration, 1);
-    const eased = 1 - Math.pow(1-p, 3);
-    const cur = num * eased;
-    el.textContent = (isFloat ? cur.toFixed(1) : Math.floor(cur).toLocaleString()) + suffix;
-    if (p < 1) requestAnimationFrame(update);
-    else el.textContent = (isFloat ? num.toFixed(1) : num.toLocaleString()) + suffix;
-  };
-  requestAnimationFrame(update);
+/* ── SIDEBAR TOGGLE ── */
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar');
+  const ov=document.getElementById('sidebar-overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
 }
 
-function animateAllCounters() {
-  document.querySelectorAll('.metric-num').forEach(el => {
-    const raw = el.textContent.trim();
-    animateCounter(el, raw, 1400);
-  });
-}
-
-/* ── BAR FILL ANIMATION ── */
-function animateAllBars() {
-  document.querySelectorAll('.bar-fill').forEach(el => {
-    const w = el.style.width || el.getAttribute('style')?.match(/width:([^;]+)/)?.[1] || '0%';
-    el.style.setProperty('--target-width', w);
-    el.style.width = '0%';
-    setTimeout(()=>{ el.style.width = w; }, 200);
-  });
-}
-
-/* ── SCROLL REVEAL ── */
-const revealObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
-  });
-}, { threshold: 0.08 });
-
-/* ── HOVER RERUN COUNTERS ── */
-function attachHoverCounters(){
-  document.querySelectorAll('.metric-card').forEach(card=>{
-    card.addEventListener('mouseenter',()=>{
-      const el = card.querySelector('.metric-num');
-      if(el){ animateCounter(el, el.textContent.trim(), 700); }
-    });
-  });
-}
-
-function attachScrollReveal() {
-  document.querySelectorAll('.metric-card, .chart-card, .debate-monitor-card, .scheduled-card, .proposal-status-card').forEach((el, i) => {
-    el.classList.add('scroll-reveal');
-    el.style.transitionDelay = (i * 0.05) + 's';
-    revealObs.observe(el);
-  });
-  // also rows in tables
-  document.querySelectorAll('tbody tr').forEach((el, i) => {
-    el.style.opacity = '0';
-    el.style.transition = `opacity 0.3s ease ${i*0.04}s`;
-    setTimeout(()=>{ el.style.opacity = '1'; }, 50);
-  });
-}
+/* ── PAGE NAV ── */
 function showPage(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   el.classList.add('active');
-  document.getElementById('page-title').textContent=titles[id];
+  document.getElementById('page-title').textContent=pageTitles[id]||id;
+  // close sidebar on mobile after nav
+  if(window.innerWidth<=768) closeSidebar();
+  // re-trigger scroll reveal for new page
+  setTimeout(()=>{ attachScrollReveal(); animateBars(); }, 60);
 }
+
+/* ── COUNTER ANIMATION ── */
+function animateCounter(el,duration=1400){
+  const raw=el.dataset.target||el.textContent.replace(/[^0-9.k]/g,'');
+  const isK=raw.includes('k');
+  const num=parseFloat(raw.replace('k',''))*(isK?1000:1);
+  if(!num||isNaN(num)) return;
+  const start=performance.now();
+  const run=(now)=>{
+    const p=Math.min((now-start)/duration,1);
+    const eased=1-Math.pow(1-p,3);
+    const cur=num*eased;
+    if(isK && num>=1000) el.textContent=(cur/1000).toFixed(1)+'k';
+    else if(num>=1000) el.textContent=Math.floor(cur).toLocaleString();
+    else if(raw.includes('.')) el.textContent=cur.toFixed(1);
+    else el.textContent=Math.floor(cur);
+    if(p<1) requestAnimationFrame(run);
+    else {
+      if(isK) el.textContent=(num/1000).toFixed(1)+'k';
+      else if(num>=1000) el.textContent=num.toLocaleString();
+      else el.textContent=num;
+    }
+  };
+  requestAnimationFrame(run);
+}
+
+function runCounters(){
+  document.querySelectorAll('[data-target]').forEach(el=>animateCounter(el));
+}
+
+/* ── HOVER RE-RUN COUNTERS ── */
+function attachHoverCounters(){
+  document.querySelectorAll('.metric-card').forEach(card=>{
+    card.addEventListener('mouseenter',()=>{
+      const el=card.querySelector('.metric-num');
+      if(el&&el.dataset.target) animateCounter(el,700);
+    });
+  });
+}
+
+/* ── BAR ANIMATION ── */
+function animateBars(){
+  document.querySelectorAll('.bar-fill[data-w]').forEach(el=>{
+    const w=el.dataset.w;
+    el.style.width='0%';
+    setTimeout(()=>{ el.style.width=w; },200);
+  });
+}
+
+/* ── SCROLL REVEAL ── */
+const srObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      srObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.06});
+
+function attachScrollReveal(){
+  document.querySelectorAll('.sr:not(.visible)').forEach((el,i)=>{
+    el.style.transitionDelay=(i*0.05)+'s';
+    srObs.observe(el);
+  });
+}
+
+/* ── FILTER / TAB HELPERS ── */
 function setFilter(btn){
   btn.closest('.filters').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');

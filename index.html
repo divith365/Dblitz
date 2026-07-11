@@ -153,6 +153,134 @@ body{font-family:var(--font-sans);background:#f0f2f8;color:var(--text-primary);m
 .role-listener{background:rgba(96,165,250,0.2);color:#60a5fa}
 .role-moderator{background:rgba(167,139,250,0.2);color:#a78bfa}
 
+/* ── MOBILE FIXES (index.html admin snapshot only) ── */
+@media (max-width: 640px) {
+  /* Stack chart row into single column */
+  .chart-row{
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /* Admin grid: 2 per row on mobile instead of 6 */
+  .admin-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Mini chart full width, more padding */
+  .mini-chart{
+    padding: 14px 12px;
+  }
+  .mini-chart-title{
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+
+  /* Bar rows — shrink label, let bar breathe */
+  .bar-row{
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .bar-label{
+    width: 46px;
+    font-size: 11px;
+  }
+  .bar-val{
+    width: 36px;
+    font-size: 11px;
+    text-align: right;
+  }
+  .bar-track{
+    height: 10px;
+    border-radius: 5px;
+  }
+  .bar-fill{
+    border-radius: 5px;
+  }
+
+  /* Language rows */
+  .lang-row{
+    margin-bottom: 9px;
+  }
+  .lang-label{font-size: 13px}
+  .lang-val{font-size: 13px}
+  .lang-dot{width: 10px;height: 10px}
+
+  /* Engagement rows — bigger tap targets */
+  .engagement-row{
+    padding: 9px 0;
+    font-size: 13px;
+  }
+
+  /* Top debators table — stack into cards */
+  .user-table thead{display: none}
+  .user-table tbody{display: flex;flex-direction: column;gap: 8px}
+  .user-table tr{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 8px 10px;
+    border-bottom: none !important;
+  }
+  .user-table td{
+    border-bottom: none;
+    padding: 0;
+    font-size: 13px;
+  }
+  .user-table td:first-child{font-weight: 700;color: #fff;flex: 1}
+  .user-table td:last-child{color: #f59e0b;font-weight: 700}
+
+  /* Admin section padding on mobile */
+  .admin-section{
+    margin: 0 1rem 1.5rem;
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+  .admin-title{font-size: 15px;margin-bottom: 1rem}
+  .admin-num{font-size: 20px}
+  .admin-label{font-size: 11px}
+
+  /* Stats bar — scroll horizontally on tiny screens */
+  .stats{
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+  .stat{
+    min-width: 90px;
+    scroll-snap-align: start;
+    padding: 1.25rem 0.75rem;
+  }
+  .stat-num{font-size: 20px}
+  .stat-label{font-size: 11px}
+
+  /* Hero on mobile */
+  .hero{padding: 3rem 1.25rem 2.5rem}
+  .hero h1{font-size: 32px;letter-spacing: -0.8px}
+  .hero p{font-size: 15px}
+  .hero-btn-main,.hero-btn-outline{padding: 11px 20px;font-size: 14px}
+
+  /* Nav on mobile */
+  .nav{padding: 0.75rem 1rem}
+  .nav-links{display: none}
+  .logo-text{font-size: 17px}
+
+  /* Section titles */
+  .section-title{font-size: 17px}
+  .section{padding: 1.75rem 1rem}
+
+  /* Debate cards — single column */
+  .debate-grid{grid-template-columns: 1fr}
+  .rec-grid{grid-template-columns: 1fr 1fr}
+}
+
+@media (max-width: 380px) {
+  .rec-grid{grid-template-columns: 1fr}
+  .admin-grid{grid-template-columns: 1fr}
+  .chart-row{gap: 8px}
+}
+
 /* ── FOOTER ── */
 .footer{padding:1.5rem 2rem;background:#0f0f1a;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .footer-text{font-size:13px;color:rgba(255,255,255,0.4);font-weight:500}
