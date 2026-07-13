@@ -833,5 +833,52 @@ function setTab(el){
   el.classList.add('active');
 }
 </script>
+
+/* ══ ADMIN ADDITIONAL MOBILE FIXES ══ */
+@media (max-width:768px){
+  /* Tables — horizontal scroll wrapper */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:480px}
+
+  /* grievances metrics 2x2 */
+  #page-grievances .metric-grid,
+  #page-recordings .metric-grid{grid-template-columns:1fr 1fr !important}
+
+  /* scheduled card body stack */
+  .sc-body{grid-template-columns:1fr}
+  .sc-section{border-right:none;border-bottom:1px solid var(--border)}
+  .sc-section:last-child{border-bottom:none}
+
+  /* chart cards padding */
+  .chart-card{padding:0.85rem}
+  .chart-title{font-size:12px;margin-bottom:8px}
+  .bar-label{width:40px;font-size:10px}
+  .bar-val{width:28px;font-size:10px}
+
+  /* login card full width */
+  .login-card{padding:1.75rem 1.25rem;border-radius:16px}
+  .login-title{font-size:18px}
+  .login-btn{padding:12px;font-size:14px}
+
+  /* topbar compact */
+  .topbar{padding:0 0.85rem;gap:8px}
+  .topbar-title{font-size:14px}
+
+  /* sidebar width */
+  :root{--sidebar-w:240px}
+}
+@media (max-width:420px){
+  table{min-width:380px}
+  .metric-grid{grid-template-columns:1fr 1fr !important}
+  .metric-num{font-size:17px}
+  .metric-label{font-size:10px}
+  .content{padding:0.65rem}
+  .dm-header{padding:8px 12px}
+  .dm-section{padding:8px 12px}
+  .viewer-num{font-size:22px}
+  .login-card{padding:1.25rem 1rem}
+}
+</style>
+
 </body>
 </html>

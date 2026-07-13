@@ -307,7 +307,7 @@ body{font-family:var(--font-sans);background:#f0f2f8;color:var(--text-primary);f
 .panel{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
 
 /* ── AUTH CARD COLOUR ── */
-.auth-card{background:linear-gradient(160deg,#ffffff,#f8f5ff);border:1px solid #e8e0ff}
+/* auth-card styled above */
 
 /* ── SECTION TITLE ── */
 .section-title{font-size:18px;font-weight:800;color:var(--text-primary)}
@@ -365,35 +365,187 @@ body{animation:pageFade 0.35s ease}
 /* ── SCROLL REVEAL ── */
 .scroll-reveal{opacity:0;transform:translateY(16px);transition:opacity 0.45s ease,transform 0.45s ease}
 .scroll-reveal.visible{opacity:1;transform:translateY(0)}
-/* ── MOBILE ── */
-@media (max-width:640px){
-  .topnav{padding:0.65rem 1rem;gap:6px}
-  .logo-text{font-size:16px !important}
-  .nav-tabs{display:none !important}
-  .page{padding:1rem}
-  .debate-grid{grid-template-columns:1fr}
-  .rec-grid{grid-template-columns:1fr 1fr}
-  .detail-grid{grid-template-columns:1fr}
-  .profile-page-grid{grid-template-columns:1fr}
-  .settings-grid{grid-template-columns:1fr}
-  .form-row{grid-template-columns:1fr}
-  .home-hero{margin:-1rem -1rem 1rem;padding:1.75rem 1rem 1.5rem;border-radius:0 0 16px 16px}
-  .home-hero-greeting{font-size:20px}
-  .home-hero-stats{gap:1rem}
-  .auth-card{padding:1.5rem}
-  .otp-row{gap:6px}
-  .otp-input{width:40px !important;height:48px !important;font-size:20px !important}
-  .resource-grid{grid-template-columns:1fr}
-  .auth-wrap{padding:0 0.25rem}
+/* ══════════════════════════════════
+   MOBILE BOTTOM NAV BAR
+══════════════════════════════════ */
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:#0f0f1a;
+  border-top:1px solid rgba(255,255,255,0.08);
+  z-index:200;padding:0;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.2);
 }
+.bottom-nav-items{
+  display:flex;align-items:stretch;
+}
+.bnav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:8px 4px 10px;cursor:pointer;transition:all 0.15s;
+  border:none;background:none;color:rgba(255,255,255,0.45);font-family:var(--font-sans);
+  gap:3px;font-size:10px;font-weight:600;letter-spacing:0.2px;
+}
+.bnav-item i{font-size:20px;line-height:1}
+.bnav-item.active{color:#e85d26}
+.bnav-item.active i{transform:translateY(-1px)}
+
+/* Push page content above bottom nav */
+body.mobile-view .page{padding-bottom:72px}
+
+/* ══════════════════════════════════
+   MOBILE  ≤ 640px
+══════════════════════════════════ */
+@media (max-width:640px){
+  /* show bottom nav, hide top nav tabs */
+  .bottom-nav{display:flex}
+  .nav-tabs{display:none !important}
+  body{padding-bottom:0}
+  .page{padding:0.85rem 0.85rem 72px}
+
+  /* topnav compact */
+  .topnav{padding:0.6rem 1rem;gap:6px}
+  .logo-text{font-size:16px !important}
+
+  /* HOME HERO */
+  .home-hero{margin:-0.85rem -0.85rem 1rem;padding:1.5rem 1rem 1.25rem;border-radius:0 0 16px 16px}
+  .home-hero-greeting{font-size:19px}
+  .home-hero-stats{gap:0.75rem;margin-top:1rem}
+  .home-hero-stat-num{font-size:17px}
+  .home-hero-stat-label{font-size:10px}
+
+  /* GRIDS → single column */
+  .debate-grid{grid-template-columns:1fr;gap:10px}
+  .rec-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .resource-grid{grid-template-columns:1fr;gap:10px}
+  .role-grid{grid-template-columns:repeat(3,1fr)}
+  .form-row{grid-template-columns:1fr}
+
+  /* DEBATE DETAIL */
+  .detail-grid{grid-template-columns:1fr}
+  .chat-area{height:100px}
+
+  /* PROFILE */
+  .profile-page-grid{grid-template-columns:1fr}
+  .profile-side-card{margin-bottom:1rem}
+
+  /* SETTINGS */
+  .settings-grid{grid-template-columns:1fr}
+  .settings-nav{border-radius:12px;margin-bottom:1rem}
+  .settings-nav-item{padding:12px 14px;font-size:14px}
+
+  /* TABS → horizontal scroll */
+  .tab-bar{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:none}
+  .tab-bar::-webkit-scrollbar{display:none}
+  .tab{flex-shrink:0;white-space:nowrap;font-size:12px;padding:8px 14px}
+
+  /* FILTER BAR → scroll */
+  .filter-bar{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding-bottom:4px;scrollbar-width:none;margin-bottom:0.75rem}
+  .filter-bar::-webkit-scrollbar{display:none}
+  .filter-chip{flex-shrink:0;white-space:nowrap}
+  .interest-grid{gap:5px}
+  .interest-chip{font-size:11px;padding:4px 10px}
+
+  /* PANELS */
+  .panel{padding:1rem;border-radius:12px}
+  .panel-title{font-size:13px}
+
+  /* AUTH */
+  .auth-wrap{padding:0}
+  .auth-card{padding:1.5rem;border-radius:16px}
+  .auth-title{font-size:18px}
+
+  /* OTP */
+  .otp-row{gap:6px}
+  .otp-input{width:40px !important;height:50px !important;font-size:20px !important;border-radius:10px !important}
+
+  /* PROFILE SETUP */
+  .profile-card{padding:1rem}
+
+  /* GRIEVANCE GRID → stack */
+  .grievance-grid-2col{grid-template-columns:1fr !important}
+
+  /* PROPOSALS */
+  .proposal-status-card{padding:0.9rem}
+  .ps-top{flex-direction:column;gap:6px;align-items:flex-start}
+
+  /* HISTORY */
+  .history-item{flex-wrap:wrap;gap:6px}
+  .history-item > div:first-child{min-width:0;flex:1}
+
+  /* TRANSCRIPT */
+  .transcript-entry{flex-direction:column;gap:4px}
+  .transcript-time{width:auto}
+  .transcript-speaker{width:auto}
+
+  /* NOTIFICATIONS */
+  .notif-item{padding:10px 12px;gap:8px}
+  .notif-icon{width:30px;height:30px;font-size:14px;flex-shrink:0}
+  .notif-title{font-size:12px}
+  .notif-desc{font-size:11px}
+
+  /* RATING */
+  .rating-summary{flex-direction:column;align-items:flex-start;gap:10px}
+  .stars-interactive .star{font-size:24px}
+
+  /* SEARCH ROW */
+  .search-row{flex-direction:column}
+  .search-input{width:100%}
+
+  /* SECTION TITLES */
+  .section-title{font-size:16px}
+  .section-header{margin-bottom:8px}
+
+  /* BACK BTN */
+  .back-btn{margin-bottom:0.75rem}
+
+  /* CHAT INPUT */
+  .chat-input-row{gap:5px}
+  .chat-input{font-size:12px}
+
+  /* DEBATOR ROW */
+  .debator-row{gap:6px}
+  .debator-avatar{width:30px;height:30px;font-size:10px}
+
+  /* JOIN DETAIL BUTTONS */
+  .join-btn{padding:9px;font-size:13px}
+
+  /* CARDS */
+  .debate-card{border-radius:12px;padding:0.9rem}
+  .card-title{font-size:13px}
+  .rec-card{border-radius:12px}
+  .rec-thumb{height:85px}
+  .rec-title{font-size:12px}
+
+  /* RESOURCES */
+  .resource-card{padding:0.85rem}
+  .resource-title{font-size:13px}
+  .resource-desc{font-size:11px}
+}
+
 @media (max-width:380px){
-  .otp-input{width:34px !important;height:44px !important;font-size:18px !important}
+  .otp-input{width:34px !important;height:44px !important;font-size:17px !important}
   .rec-grid{grid-template-columns:1fr}
+  .home-hero-stats{gap:0.5rem}
+  .home-hero-stat-num{font-size:15px}
+  .topnav{padding:0.5rem 0.75rem}
+  .page{padding:0.75rem 0.75rem 72px}
 }
 </style>
 </head>
 <body>
 <div class="app">
+
+  <!-- ═══════════ MOBILE BOTTOM NAV ═══════════ -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <div class="bottom-nav-items">
+      <button class="bnav-item active" onclick="mobileNav('home-auth',this)"><i class="ti ti-home"></i>Home</button>
+      <button class="bnav-item" onclick="mobileNav('browse',this)"><i class="ti ti-microphone"></i>Browse</button>
+      <button class="bnav-item" onclick="mobileNav('recordings',this)"><i class="ti ti-video"></i>Watch</button>
+      <button class="bnav-item" onclick="mobileNav('propose',this)"><i class="ti ti-plus-circle"></i>Propose</button>
+      <button class="bnav-item" onclick="mobileNav('notifications',this)"><i class="ti ti-bell"></i>Alerts</button>
+      <button class="bnav-item" onclick="mobileNav('profile',this)"><i class="ti ti-user"></i>Profile</button>
+    </div>
+  </nav>
 
   <!-- ═══════════ TOP NAV ═══════════ -->
   <div class="topnav">
@@ -425,39 +577,71 @@ body{animation:pageFade 0.35s ease}
 
   <!-- ═══════════ PAGE: REGISTER ═══════════ -->
   <div class="page active" id="page-register">
-    <!-- JOIN PROMO CARD -->
-    <div style="background:linear-gradient(135deg,#0f0f1a,#1a1035);border-radius:18px;padding:2rem;margin-bottom:1.25rem;text-align:center;position:relative;overflow:hidden">
-      <div style="position:absolute;top:-30%;left:-20%;width:140%;height:180%;background:radial-gradient(ellipse at 70% 50%,rgba(232,93,38,0.15) 0%,transparent 60%);pointer-events:none"></div>
-      <div style="font-size:28px;margin-bottom:10px">🎤</div>
-      <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.5px;margin-bottom:8px">Join <span style="color:#e85d26">DebateBlitz</span></div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:1.25rem">Propose, watch, and participate in real debates — from college forums to national politics. Open to everyone, everywhere.</div>
+
+    <!-- PROMO CARD -->
+    <div style="background:linear-gradient(135deg,#0f0f1a 0%,#1a1035 60%,#0d1a2e 100%);border-radius:20px;padding:2rem 1.5rem;margin-bottom:1.25rem;text-align:center;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.2)">
+      <div style="position:absolute;top:-40%;left:-20%;width:140%;height:200%;background:radial-gradient(ellipse at 65% 45%,rgba(232,93,38,0.18) 0%,transparent 60%);pointer-events:none"></div>
+      <div style="font-size:36px;margin-bottom:12px">🎤</div>
+      <div style="font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px;margin-bottom:8px">Join <span style="color:#e85d26">DebateBlitz</span></div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.65;margin-bottom:1.5rem;max-width:320px;margin-left:auto;margin-right:auto">Propose, watch, and participate in real debates — from college forums to national politics. Open to everyone, everywhere.</div>
       <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap">
-        <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:#fff">12k+</div><div style="font-size:11px;color:rgba(255,255,255,0.5);font-weight:600;text-transform:uppercase;letter-spacing:0.4px">Users</div></div>
-        <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:#fff">47</div><div style="font-size:11px;color:rgba(255,255,255,0.5);font-weight:600;text-transform:uppercase;letter-spacing:0.4px">Countries</div></div>
-        <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:#fff">248</div><div style="font-size:11px;color:rgba(255,255,255,0.5);font-weight:600;text-transform:uppercase;letter-spacing:0.4px">Debates</div></div>
-        <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:#f59e0b">4.6★</div><div style="font-size:11px;color:rgba(255,255,255,0.5);font-weight:600;text-transform:uppercase;letter-spacing:0.4px">Rating</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:#fff">12k+</div><div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px">Users</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:#fff">47</div><div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px">Countries</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:#fff">248</div><div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px">Debates</div></div>
+        <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:#f59e0b">4.6★</div><div style="font-size:10px;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px">Rating</div></div>
       </div>
     </div>
 
-    <div class="auth-wrap" style="padding-top:0">
-      <div class="auth-card">
-        <div class="auth-logo">
-          <div class="auth-logo-icon"><svg viewBox="0 0 24 24" fill="none" width="22" height="22"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="4" rx="1" fill="#fff"/><rect x="8" y="18" width="8" height="2" rx="1" fill="#fff"/></svg></div>
-          <div class="auth-title">Verify your number</div>
-          <div class="auth-sub">Create your account to debate, watch, and connect globally</div>
+    <!-- STEP 1 — PHONE (shown first) -->
+    <div id="reg-step1" style="max-width:440px;margin:0 auto">
+      <div style="background:#fff;border:1px solid #e8e0ff;border-radius:18px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,0.07)">
+        <div style="text-align:center;margin-bottom:1.5rem">
+          <div style="width:52px;height:52px;border-radius:50%;background:#0f0f1a;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 16px rgba(0,0,0,0.2)">
+            <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="4" rx="1" fill="#fff"/><rect x="8" y="18" width="8" height="2" rx="1" fill="#fff"/></svg>
+          </div>
+          <div style="font-size:20px;font-weight:800;color:#111827">Create account</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px">Enter your phone number to get started</div>
         </div>
-        <div class="step-indicator">
-          <div class="step"><div class="step-circle step-done">✓</div><div class="step-label">Phone</div></div>
+        <!-- Step indicator -->
+        <div class="step-indicator" style="margin-bottom:1.5rem">
+          <div class="step"><div class="step-circle step-active">1</div><div class="step-label">Phone</div></div>
           <div class="step-line"></div>
-          <div class="step"><div class="step-circle step-active">2</div><div class="step-label">Verify OTP</div></div>
+          <div class="step"><div class="step-circle step-inactive">2</div><div class="step-label">OTP</div></div>
           <div class="step-line"></div>
           <div class="step"><div class="step-circle step-inactive">3</div><div class="step-label">Profile</div></div>
         </div>
-        <div style="text-align:center;margin-bottom:1rem">
-          <div style="font-size:13px;font-weight:500;margin-bottom:4px">OTP sent to +91 98765 43210</div>
-          <div style="font-size:13px;color:var(--text-muted)">Didn't receive? <span style="color:var(--text-accent);cursor:pointer">Resend in 0:42</span></div>
+        <div class="form-group">
+          <div class="form-label">Phone number</div>
+          <div class="phone-row">
+            <select class="form-input country-code"><option>🇮🇳 +91</option><option>🇺🇸 +1</option><option>🇬🇧 +44</option><option>🇦🇺 +61</option><option>🇸🇬 +65</option><option>🇨🇦 +1</option></select>
+            <input class="form-input" placeholder="98765 43210" style="flex:1">
+          </div>
         </div>
-        <div class="otp-row">
+        <button onclick="showOTPStep()" style="width:100%;padding:14px;background:linear-gradient(135deg,#e85d26,#f97316);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 18px rgba(232,93,38,0.38);transition:all 0.18s;margin-top:4px">Send OTP →</button>
+        <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--text-muted)">Already have an account? <span style="color:#e85d26;cursor:pointer;font-weight:700" onclick="nav('login')">Log in</span></div>
+      </div>
+    </div>
+
+    <!-- STEP 2 — OTP (hidden initially) -->
+    <div id="reg-step2" style="display:none;max-width:440px;margin:0 auto">
+      <div style="background:#fff;border:1px solid #e8e0ff;border-radius:18px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,0.07)">
+        <div style="text-align:center;margin-bottom:1.5rem">
+          <div style="width:52px;height:52px;border-radius:50%;background:#0f0f1a;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 16px rgba(0,0,0,0.2)">
+            <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><circle cx="12" cy="10" r="5" fill="#e85d26"/><rect x="11" y="15" width="2" height="4" rx="1" fill="#fff"/><rect x="8" y="18" width="8" height="2" rx="1" fill="#fff"/></svg>
+          </div>
+          <div style="font-size:20px;font-weight:800;color:#111827">Verify your number</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px">OTP sent to +91 98765 43210</div>
+        </div>
+        <!-- Step indicator -->
+        <div class="step-indicator" style="margin-bottom:1.5rem">
+          <div class="step"><div class="step-circle step-done">✓</div><div class="step-label">Phone</div></div>
+          <div class="step-line"></div>
+          <div class="step"><div class="step-circle step-active">2</div><div class="step-label">OTP</div></div>
+          <div class="step-line"></div>
+          <div class="step"><div class="step-circle step-inactive">3</div><div class="step-label">Profile</div></div>
+        </div>
+        <!-- OTP inputs -->
+        <div class="otp-row" style="justify-content:center;margin-bottom:8px">
           <input class="otp-input" maxlength="1" value="4">
           <input class="otp-input" maxlength="1" value="8">
           <input class="otp-input" maxlength="1" value="2">
@@ -465,8 +649,12 @@ body{animation:pageFade 0.35s ease}
           <input class="otp-input" maxlength="1">
           <input class="otp-input" maxlength="1">
         </div>
-        <button style="width:100%;padding:13px;background:linear-gradient(135deg,#e85d26,#f97316);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(232,93,38,0.35);margin-top:4px;transition:all 0.18s" onclick="nav('profile-setup')">Verify OTP &amp; continue →</button>
-        <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text-muted)">Already have an account? <span style="color:var(--text-accent);cursor:pointer" onclick="nav('login')">Log in</span></div>
+        <div style="text-align:center;margin-bottom:16px;font-size:13px;color:var(--text-muted)">Didn't receive? <span style="color:#e85d26;cursor:pointer;font-weight:600">Resend in 0:42</span></div>
+        <!-- SUBMIT BUTTON — fully visible orange gradient -->
+        <button onclick="nav('profile-setup')" style="width:100%;padding:14px;background:linear-gradient(135deg,#e85d26,#f97316);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 18px rgba(232,93,38,0.4);transition:all 0.18s;display:block">Verify OTP &amp; continue →</button>
+        <div style="text-align:center;margin-top:14px">
+          <span style="font-size:13px;color:var(--text-muted);cursor:pointer" onclick="document.getElementById('reg-step1').style.display='block';document.getElementById('reg-step2').style.display='none'">← Change number</span>
+        </div>
       </div>
     </div>
   </div>
@@ -503,7 +691,7 @@ body{animation:pageFade 0.35s ease}
 
   <!-- ═══════════ PAGE: PROFILE SETUP ═══════════ -->
   <div class="page" id="page-profile-setup">
-    <div style="max-width:560px;margin:0 auto;padding:1rem 0">
+    <div style="max-width:560px;width:100%;margin:0 auto;padding:1rem 0">
       <div class="step-indicator" style="margin-bottom:1rem">
         <div class="step"><div class="step-circle step-done">✓</div><div class="step-label">Phone</div></div>
         <div class="step-line"></div>
@@ -724,7 +912,7 @@ body{animation:pageFade 0.35s ease}
   <!-- ═══════════ PAGE: PROPOSE ═══════════ -->
   <div class="page" id="page-propose">
     <div class="section-header"><span class="section-title">Propose a debate</span></div>
-    <div style="max-width:620px">
+    <div style="max-width:620px;width:100%">
       <div class="panel">
         <div class="form-group"><div class="form-label">Debate topic / title</div><input class="form-input" placeholder="e.g. Should India adopt a 4-day work week?"></div>
         <div class="form-group"><div class="form-label">Description</div><textarea class="form-input" rows="3" placeholder="Briefly describe what this debate is about and why it matters..."></textarea></div>
@@ -783,7 +971,7 @@ body{animation:pageFade 0.35s ease}
   <!-- ═══════════ PAGE: POST DEBATE RATING ═══════════ -->
   <div class="page" id="page-post-debate">
     <div class="back-btn" onclick="nav('home-auth')">← Back to home</div>
-    <div style="max-width:580px">
+    <div style="max-width:580px;width:100%">
       <div class="panel">
         <div style="font-size:17px;font-weight:500;margin-bottom:4px">Rate this debate</div>
         <div style="font-size:13px;color:var(--text-muted);margin-bottom:1.25rem">Modi vs Opposition — Budget 2025 · Ended Jul 5, 7:42 PM · 84 min</div>
@@ -834,7 +1022,7 @@ body{animation:pageFade 0.35s ease}
   <!-- ═══════════ PAGE: TRANSCRIPT ═══════════ -->
   <div class="page" id="page-transcript">
     <div class="back-btn" onclick="nav('recordings')">← Back to recordings</div>
-    <div style="max-width:720px">
+    <div style="max-width:720px;width:100%">
       <div class="panel" style="margin-bottom:10px">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px">
           <div><div style="font-size:17px;font-weight:500;margin-bottom:6px">Modi vs Opposition — Budget 2025</div><div style="font-size:12px;color:var(--text-muted)"><span class="badge badge-politics">Politics</span> &nbsp; Jul 5 · 84 min · 4 debators · 🇮🇳</div></div>
@@ -915,7 +1103,7 @@ body{animation:pageFade 0.35s ease}
 
   <!-- ═══════════ PAGE: GRIEVANCE ═══════════ -->
   <div class="page" id="page-grievance">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex-wrap:wrap">
+    <div class="grievance-grid-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;min-width:0">
       <div>
         <div style="font-size:16px;font-weight:500;margin-bottom:4px">Submit a grievance</div>
         <div style="font-size:13px;color:var(--text-muted);margin-bottom:1rem">Report issues with users, debates, or the platform</div>
@@ -1023,6 +1211,22 @@ body{animation:pageFade 0.35s ease}
 </div><!-- end .app -->
 
 <script>
+// ── SHOW OTP STEP ─────────────────────────────────────────
+function showOTPStep() {
+  document.getElementById('reg-step1').style.display = 'none';
+  document.getElementById('reg-step2').style.display = 'block';
+  // focus first OTP box
+  const first = document.querySelector('#reg-step2 .otp-input');
+  if(first) first.focus();
+}
+
+// ── MOBILE BOTTOM NAV ─────────────────────────────────────
+function mobileNav(id, el) {
+  nav(id);
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
+
 // ── CORE NAV ──────────────────────────────────────────────
 function nav(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1036,6 +1240,9 @@ function nav(id, el) {
     document.getElementById('auth-btns').style.display = 'none';
     document.getElementById('user-nav').style.display = 'flex';
     document.getElementById('main-nav').style.display = 'flex';
+    // show mobile bottom nav
+    document.getElementById('bottom-nav').style.display = 'flex';
+    document.body.classList.add('mobile-view');
   }
 
   // highlight active nav tab
@@ -1123,5 +1330,62 @@ document.querySelectorAll('.debator-card-rate').forEach(card => {
   });
 });
 </script>
+
+/* ══ USER FILE ADDITIONAL MOBILE FIXES ══ */
+@media (max-width:640px){
+  /* max-width containers go full width */
+  [style*="max-width:620px"],
+  [style*="max-width:580px"],
+  [style*="max-width:720px"],
+  [style*="max-width:560px"],
+  [style*="max-width:440px"],
+  #reg-step1,#reg-step2{width:100% !important;padding-left:0 !important;padding-right:0 !important}
+
+  /* grievance stack on mobile */
+  .grievance-grid-2col{grid-template-columns:1fr !important}
+
+  /* bottom nav always visible on mobile once logged in */
+  .bottom-nav{display:flex}
+
+  /* propose form sections */
+  .section-header{flex-wrap:wrap;gap:8px}
+
+  /* tab bar scroll */
+  .tab-bar{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+  .tab-bar::-webkit-scrollbar{display:none}
+  .tab{flex-shrink:0;font-size:12px;padding:8px 12px}
+
+  /* proposal cards */
+  .proposal-status-card .ps-top{flex-direction:column;gap:6px;align-items:flex-start}
+  .status-pill{align-self:flex-start}
+
+  /* notification items */
+  .notif-item{padding:10px 10px;gap:8px}
+
+  /* debate detail stacked panels */
+  .detail-grid > div:last-child{order:-1}
+
+  /* settings nav on mobile becomes horizontal tabs */
+  .settings-grid{grid-template-columns:1fr}
+  .settings-nav{display:flex;flex-direction:row;overflow-x:auto;border-radius:12px;margin-bottom:12px;white-space:nowrap;scrollbar-width:none}
+  .settings-nav::-webkit-scrollbar{display:none}
+  .settings-nav-item{flex-shrink:0;border-left:none !important;border-bottom:3px solid transparent;padding:10px 16px;font-size:13px}
+  .settings-nav-item.active{border-bottom-color:#e85d26;border-left-color:transparent !important;background:var(--surface-1)}
+
+  /* profile side card full width */
+  .profile-side-card{margin-bottom:1rem}
+  .profile-stat-row{padding:10px 0;margin:10px 0}
+  .profile-stat-num{font-size:16px}
+
+  /* stars rating */
+  .stars-interactive .star{font-size:26px}
+  .debator-stars .debator-star{font-size:20px}
+
+  /* home sections spacing */
+  .section-header{margin-bottom:8px}
+  #page-home-auth > div:not(.home-hero){margin-bottom:1rem}
+}
+</style>
+
 </body>
 </html>
