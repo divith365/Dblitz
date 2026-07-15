@@ -289,7 +289,6 @@ body{font-family:var(--font-sans);background:#f0f2f8;color:var(--text-primary);m
   .nav{padding:0.75rem 1rem}
   .logo-text{font-size:17px}
 }
-</style>
 .footer{padding:1.5rem 2rem;background:#0f0f1a;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .footer-text{font-size:13px;color:rgba(255,255,255,0.4);font-weight:500}
 .footer-links{display:flex;gap:1.25rem}
@@ -548,7 +547,6 @@ document.querySelectorAll('.debate-card,.rec-card').forEach((el,i)=>{
   el.style.transition=`opacity 0.4s ease ${i*0.08}s, transform 0.4s ease ${i*0.08}s, box-shadow 0.25s, border-color 0.25s`;
   cardObs.observe(el);
 });
-/* ── FOOTER ── */
 
 function toggleMobileMenu(){
   const m=document.getElementById('mobile-menu');
@@ -558,8 +556,6 @@ function toggleMobileMenu(){
   h.textContent=open?'☰':'✕';
 }
 </script>
-</body>
-</html>
 <style>
 /* ══ INDEX MOBILE REMAINING FIXES ══ */
 @media (max-width:640px){
@@ -621,3 +617,5 @@ function toggleMobileMenu(){
   .admin-grid{grid-template-columns:1fr 1fr}
 }
 </style>
+</body>
+</html>
